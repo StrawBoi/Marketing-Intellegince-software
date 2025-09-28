@@ -149,8 +149,12 @@ const BehavioralChart = ({ behavioralData }) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="h-56">
-        <div className="h-full w-full">
-          <Bar data={chartData} options={options} />
+        <div className="h-full w-full flex items-center justify-center">
+          <div className="text-center text-slate-500">
+            <BarChart3 className="w-12 h-12 mx-auto mb-4 opacity-30" />
+            <p>Chart temporarily disabled</p>
+            <p className="text-sm">Chart.js integration being fixed</p>
+          </div>
         </div>
       </CardContent>
     </Card>
