@@ -92,6 +92,8 @@ const CampaignGenerator = () => {
   const clearForm = () => {
     setCustomerPersona('');
     setProductDescription('');
+    setGeographicLocation('');
+    setInterests('');
     setGeneratedContent('');
   };
 
