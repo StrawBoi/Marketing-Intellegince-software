@@ -62,6 +62,8 @@ class CampaignCreate(BaseModel):
 class AnalysisRequest(BaseModel):
     persona: str = Field(..., description="Customer persona for behavioral analysis")
     product_description: str = Field(..., description="Product or service description")
+    geographic_location: Optional[str] = Field(None, description="Geographic location for regional analysis")
+    interests: Optional[str] = Field(None, description="Specific interests for targeted analysis")
 
 class ColorInfo(BaseModel):
     hex_code: str = Field(..., description="Hex color code")
