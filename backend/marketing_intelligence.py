@@ -5,6 +5,8 @@ import hashlib
 import asyncio
 import re
 import random
+import feedparser
+import requests
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional, Tuple
 from collections import Counter
