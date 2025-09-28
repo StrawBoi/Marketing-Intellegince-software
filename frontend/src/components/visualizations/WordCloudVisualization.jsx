@@ -89,12 +89,22 @@ const WordCloudVisualization = ({ wordCloudData }) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="h-56">
-        <div className="h-full w-full">
-          <WordCloud
-            words={formattedData}
-            options={options}
-            callbacks={callbacks}
-          />
+        <div className="h-full w-full p-4">
+          {/* Temporary word cloud replacement with styled keywords */}
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+            {formattedData.slice(0, 12).map((word, index) => (
+              <div 
+                key={index}
+                className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-3 py-2 rounded-lg text-center font-semibold transition-all hover:scale-105 hover:shadow-md"
+                style={{ 
+                  fontSize: `${Math.max(12, Math.min(18, word.value / 5))}px`,
+                }}
+                title={`${word.text}: ${word.value}`}
+              >
+                {word.text}
+              </div>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>
