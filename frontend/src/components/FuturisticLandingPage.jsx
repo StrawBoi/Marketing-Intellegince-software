@@ -8,6 +8,40 @@ import AuthenticationMenu from './AuthenticationMenu';
 
 const FuturisticLandingPage = () => {
   const navigate = useNavigate();
+  const [showAuth, setShowAuth] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setShowAuth(false);
+    // Store in localStorage for persistence
+    localStorage.setItem('marketingProUser', JSON.stringify(userData));
+    navigate('/intelligence');
+  };
+
+  const handleSignup = (userData) => {
+    setUser(userData);
+    setShowAuth(false);
+    localStorage.setItem('marketingProUser', JSON.stringify(userData));
+    navigate('/intelligence');
+  };
+
+  const handleDemoWalkthrough = () => {
+    // Set demo user
+    const demoUser = {
+      name: 'Demo User',
+      email: 'demo@example.com',
+      avatar: 'DU',
+      subscription: 'Professional',
+      campaigns: 24,
+      totalROI: 324.5,
+      isAuthenticated: true,
+      isDemo: true
+    };
+    setUser(demoUser);
+    localStorage.setItem('marketingProUser', JSON.stringify(demoUser));
+    navigate('/intelligence');
+  };
 
   const features = [
     {
