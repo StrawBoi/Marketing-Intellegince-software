@@ -286,6 +286,28 @@ def generate_color_palette(persona: str, geographic_location: Optional[str] = No
         if len(colors) < 5:
             colors.append(ColorInfo(hex_code="#4CAF50", color_name="Earth Green", psychological_effect="Natural and sustainable, appeals to environmentally conscious consumers"))
     
+    # Geographic color preferences
+    if geographic_location and len(colors) < 5:
+        location_lower = geographic_location.lower()
+        if any(region in location_lower for region in ['uk', 'britain', 'england']):
+            colors.append(ColorInfo(hex_code="#1B365D", color_name="British Navy", psychological_effect="Traditional and trustworthy, appeals to British preference for understated elegance"))
+        elif any(region in location_lower for region in ['japan', 'tokyo']):
+            colors.append(ColorInfo(hex_code="#C41E3A", color_name="Japanese Red", psychological_effect="Respectful yet vibrant, aligns with Japanese aesthetic preferences"))
+        elif any(region in location_lower for region in ['germany', 'berlin']):
+            colors.append(ColorInfo(hex_code="#000000", color_name="German Black", psychological_effect="Precise and professional, appeals to German preference for functionality"))
+    
+    # Interest-based color additions
+    if interests and len(colors) < 5:
+        interests_lower = interests.lower()
+        if 'sustainability' in interests_lower or 'eco' in interests_lower:
+            colors.append(ColorInfo(hex_code="#2E7D32", color_name="Eco Green", psychological_effect="Natural and responsible, appeals to environmentally conscious mindset"))
+        elif 'fitness' in interests_lower or 'health' in interests_lower:
+            colors.append(ColorInfo(hex_code="#FF5722", color_name="Energy Orange", psychological_effect="Energetic and motivating, appeals to fitness and health enthusiasts"))
+        elif 'art' in interests_lower or 'creative' in interests_lower:
+            colors.append(ColorInfo(hex_code="#9C27B0", color_name="Creative Purple", psychological_effect="Artistic and inspiring, resonates with creative personalities"))
+        elif 'technology' in interests_lower or 'tech' in interests_lower:
+            colors.append(ColorInfo(hex_code="#00BCD4", color_name="Tech Cyan", psychological_effect="Modern and innovative, appeals to technology enthusiasts"))
+    
     # Ensure we have at least 3-4 colors, add defaults if needed
     if len(colors) < 3:
         colors.extend([
