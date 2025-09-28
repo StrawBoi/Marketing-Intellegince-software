@@ -1,0 +1,131 @@
+{
+  "cities": [
+    {"name": "New York City", "country": "United States", "region": "North America", "state": "NY", "display": "New York City, NY, United States"},
+    {"name": "San Francisco", "country": "United States", "region": "North America", "state": "CA", "display": "San Francisco, CA, United States"},
+    {"name": "Los Angeles", "country": "United States", "region": "North America", "state": "CA", "display": "Los Angeles, CA, United States"},
+    {"name": "Chicago", "country": "United States", "region": "North America", "state": "IL", "display": "Chicago, IL, United States"},
+    {"name": "Austin", "country": "United States", "region": "North America", "state": "TX", "display": "Austin, TX, United States"},
+    {"name": "Miami", "country": "United States", "region": "North America", "state": "FL", "display": "Miami, FL, United States"},
+    {"name": "Seattle", "country": "United States", "region": "North America", "state": "WA", "display": "Seattle, WA, United States"},
+    {"name": "Boston", "country": "United States", "region": "North America", "state": "MA", "display": "Boston, MA, United States"},
+    {"name": "Denver", "country": "United States", "region": "North America", "state": "CO", "display": "Denver, CO, United States"},
+    {"name": "Atlanta", "country": "United States", "region": "North America", "state": "GA", "display": "Atlanta, GA, United States"},
+    
+    {"name": "London", "country": "United Kingdom", "region": "Europe", "state": null, "display": "London, United Kingdom"},
+    {"name": "Manchester", "country": "United Kingdom", "region": "Europe", "state": null, "display": "Manchester, United Kingdom"},
+    {"name": "Edinburgh", "country": "United Kingdom", "region": "Europe", "state": null, "display": "Edinburgh, Scotland, UK"},
+    {"name": "Birmingham", "country": "United Kingdom", "region": "Europe", "state": null, "display": "Birmingham, United Kingdom"},
+    
+    {"name": "Paris", "country": "France", "region": "Europe", "state": null, "display": "Paris, France"},
+    {"name": "Lyon", "country": "France", "region": "Europe", "state": null, "display": "Lyon, France"},
+    {"name": "Marseille", "country": "France", "region": "Europe", "state": null, "display": "Marseille, France"},
+    
+    {"name": "Berlin", "country": "Germany", "region": "Europe", "state": null, "display": "Berlin, Germany"},
+    {"name": "Munich", "country": "Germany", "region": "Europe", "state": null, "display": "Munich, Germany"},
+    {"name": "Hamburg", "country": "Germany", "region": "Europe", "state": null, "display": "Hamburg, Germany"},
+    {"name": "Frankfurt", "country": "Germany", "region": "Europe", "state": null, "display": "Frankfurt, Germany"},
+    
+    {"name": "Amsterdam", "country": "Netherlands", "region": "Europe", "state": null, "display": "Amsterdam, Netherlands"},
+    {"name": "Rotterdam", "country": "Netherlands", "region": "Europe", "state": null, "display": "Rotterdam, Netherlands"},
+    
+    {"name": "Stockholm", "country": "Sweden", "region": "Europe", "state": null, "display": "Stockholm, Sweden"},
+    {"name": "Copenhagen", "country": "Denmark", "region": "Europe", "state": null, "display": "Copenhagen, Denmark"},
+    {"name": "Oslo", "country": "Norway", "region": "Europe", "state": null, "display": "Oslo, Norway"},
+    
+    {"name": "Madrid", "country": "Spain", "region": "Europe", "state": null, "display": "Madrid, Spain"},
+    {"name": "Barcelona", "country": "Spain", "region": "Europe", "state": null, "display": "Barcelona, Spain"},
+    {"name": "Valencia", "country": "Spain", "region": "Europe", "state": null, "display": "Valencia, Spain"},
+    
+    {"name": "Rome", "country": "Italy", "region": "Europe", "state": null, "display": "Rome, Italy"},
+    {"name": "Milan", "country": "Italy", "region": "Europe", "state": null, "display": "Milan, Italy"},
+    {"name": "Naples", "country": "Italy", "region": "Europe", "state": null, "display": "Naples, Italy"},
+    
+    {"name": "Toronto", "country": "Canada", "region": "North America", "state": "ON", "display": "Toronto, ON, Canada"},
+    {"name": "Vancouver", "country": "Canada", "region": "North America", "state": "BC", "display": "Vancouver, BC, Canada"},
+    {"name": "Montreal", "country": "Canada", "region": "North America", "state": "QC", "display": "Montreal, QC, Canada"},
+    {"name": "Calgary", "country": "Canada", "region": "North America", "state": "AB", "display": "Calgary, AB, Canada"},
+    
+    {"name": "Sydney", "country": "Australia", "region": "Oceania", "state": "NSW", "display": "Sydney, NSW, Australia"},
+    {"name": "Melbourne", "country": "Australia", "region": "Oceania", "state": "VIC", "display": "Melbourne, VIC, Australia"},
+    {"name": "Brisbane", "country": "Australia", "region": "Oceania", "state": "QLD", "display": "Brisbane, QLD, Australia"},
+    {"name": "Perth", "country": "Australia", "region": "Oceania", "state": "WA", "display": "Perth, WA, Australia"},
+    
+    {"name": "Tokyo", "country": "Japan", "region": "Asia", "state": null, "display": "Tokyo, Japan"},
+    {"name": "Osaka", "country": "Japan", "region": "Asia", "state": null, "display": "Osaka, Japan"},
+    {"name": "Kyoto", "country": "Japan", "region": "Asia", "state": null, "display": "Kyoto, Japan"},
+    
+    {"name": "Seoul", "country": "South Korea", "region": "Asia", "state": null, "display": "Seoul, South Korea"},
+    {"name": "Busan", "country": "South Korea", "region": "Asia", "state": null, "display": "Busan, South Korea"},
+    
+    {"name": "Singapore", "country": "Singapore", "region": "Asia", "state": null, "display": "Singapore"},
+    {"name": "Hong Kong", "country": "Hong Kong", "region": "Asia", "state": null, "display": "Hong Kong"},
+    
+    {"name": "Shanghai", "country": "China", "region": "Asia", "state": null, "display": "Shanghai, China"},
+    {"name": "Beijing", "country": "China", "region": "Asia", "state": null, "display": "Beijing, China"},
+    {"name": "Shenzhen", "country": "China", "region": "Asia", "state": null, "display": "Shenzhen, China"},
+    
+    {"name": "Mumbai", "country": "India", "region": "Asia", "state": null, "display": "Mumbai, India"},
+    {"name": "Delhi", "country": "India", "region": "Asia", "state": null, "display": "Delhi, India"},
+    {"name": "Bangalore", "country": "India", "region": "Asia", "state": null, "display": "Bangalore, India"},
+    {"name": "Chennai", "country": "India", "region": "Asia", "state": null, "display": "Chennai, India"},
+    
+    {"name": "Dubai", "country": "United Arab Emirates", "region": "Middle East", "state": null, "display": "Dubai, United Arab Emirates"},
+    {"name": "Abu Dhabi", "country": "United Arab Emirates", "region": "Middle East", "state": null, "display": "Abu Dhabi, United Arab Emirates"},
+    
+    {"name": "Tel Aviv", "country": "Israel", "region": "Middle East", "state": null, "display": "Tel Aviv, Israel"},
+    {"name": "Jerusalem", "country": "Israel", "region": "Middle East", "state": null, "display": "Jerusalem, Israel"},
+    
+    {"name": "São Paulo", "country": "Brazil", "region": "South America", "state": null, "display": "São Paulo, Brazil"},
+    {"name": "Rio de Janeiro", "country": "Brazil", "region": "South America", "state": null, "display": "Rio de Janeiro, Brazil"},
+    {"name": "Brasília", "country": "Brazil", "region": "South America", "state": null, "display": "Brasília, Brazil"},
+    
+    {"name": "Buenos Aires", "country": "Argentina", "region": "South America", "state": null, "display": "Buenos Aires, Argentina"},
+    {"name": "Santiago", "country": "Chile", "region": "South America", "state": null, "display": "Santiago, Chile"},
+    {"name": "Lima", "country": "Peru", "region": "South America", "state": null, "display": "Lima, Peru"},
+    
+    {"name": "Mexico City", "country": "Mexico", "region": "North America", "state": null, "display": "Mexico City, Mexico"},
+    {"name": "Guadalajara", "country": "Mexico", "region": "North America", "state": null, "display": "Guadalajara, Mexico"},
+    {"name": "Monterrey", "country": "Mexico", "region": "North America", "state": null, "display": "Monterrey, Mexico"},
+    
+    {"name": "Lagos", "country": "Nigeria", "region": "Africa", "state": null, "display": "Lagos, Nigeria"},
+    {"name": "Cairo", "country": "Egypt", "region": "Africa", "state": null, "display": "Cairo, Egypt"},
+    {"name": "Cape Town", "country": "South Africa", "region": "Africa", "state": null, "display": "Cape Town, South Africa"},
+    {"name": "Johannesburg", "country": "South Africa", "region": "Africa", "state": null, "display": "Johannesburg, South Africa"}
+  ],
+  "countries": [
+    {"name": "United States", "region": "North America", "display": "United States"},
+    {"name": "United Kingdom", "region": "Europe", "display": "United Kingdom"},
+    {"name": "Canada", "region": "North America", "display": "Canada"},
+    {"name": "Australia", "region": "Oceania", "display": "Australia"},
+    {"name": "Germany", "region": "Europe", "display": "Germany"},
+    {"name": "France", "region": "Europe", "display": "France"},
+    {"name": "Japan", "region": "Asia", "display": "Japan"},
+    {"name": "South Korea", "region": "Asia", "display": "South Korea"},
+    {"name": "Singapore", "region": "Asia", "display": "Singapore"},
+    {"name": "Netherlands", "region": "Europe", "display": "Netherlands"},
+    {"name": "Sweden", "region": "Europe", "display": "Sweden"},
+    {"name": "Denmark", "region": "Europe", "display": "Denmark"},
+    {"name": "Norway", "region": "Europe", "display": "Norway"},
+    {"name": "Spain", "region": "Europe", "display": "Spain"},
+    {"name": "Italy", "region": "Europe", "display": "Italy"},
+    {"name": "China", "region": "Asia", "display": "China"},
+    {"name": "India", "region": "Asia", "display": "India"},
+    {"name": "Brazil", "region": "South America", "display": "Brazil"},
+    {"name": "Argentina", "region": "South America", "display": "Argentina"},
+    {"name": "Mexico", "region": "North America", "display": "Mexico"},
+    {"name": "United Arab Emirates", "region": "Middle East", "display": "United Arab Emirates"},
+    {"name": "Israel", "region": "Middle East", "display": "Israel"},
+    {"name": "South Africa", "region": "Africa", "display": "South Africa"},
+    {"name": "Nigeria", "region": "Africa", "display": "Nigeria"},
+    {"name": "Egypt", "region": "Africa", "display": "Egypt"}
+  ],
+  "regions": [
+    {"name": "North America", "display": "North America"},
+    {"name": "Europe", "display": "Europe"},
+    {"name": "Asia", "display": "Asia"},
+    {"name": "South America", "display": "South America"},
+    {"name": "Africa", "display": "Africa"},
+    {"name": "Oceania", "display": "Oceania"},
+    {"name": "Middle East", "display": "Middle East"}
+  ]
+}
