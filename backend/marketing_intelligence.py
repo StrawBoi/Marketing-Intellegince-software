@@ -612,30 +612,44 @@ class ImageGenerationService:
             return await self._mock_image_generation(age_range, location, interests)
     
     async def _real_image_generation(self, age_range: str, location: str, interests: List[str], trending_keywords: List[str]) -> str:
-        """Real image generation using Emergent LLM integration"""
+        """Real image generation using Emergent LLM integration with DALL-E 3"""
         try:
             from emergentintegrations.llm.openai.image_generation import OpenAIImageGeneration
             
             # Create detailed prompt for persona image
-            prompt = self._create_image_prompt(age_range, location, interests, trending_keywords)
+            prompt = self._create_enhanced_image_prompt(age_range, location, interests, trending_keywords)
+            
+            logger.info(f"Generating persona image with prompt: {prompt[:100]}...")
             
             image_gen = OpenAIImageGeneration(api_key=api_config.emergent_llm_key)
-            images = await image_gen.generate_images(
+            
+            # Generate with DALL-E 3 parameters
+            result = await image_gen.generate_images(
                 prompt=prompt,
-                model="gpt-image-1",
-                number_of_images=1
+                model="dall-e-3",
+                size="1024x1024",
+                quality="standard",
+                style="vivid",
+                n=1
             )
             
-            if images and len(images) > 0:
-                # Convert to base64 for consistent response format
-                image_base64 = base64.b64encode(images[0]).decode('utf-8')
-                return f"data:image/png;base64,{image_base64}"
+            if result and hasattr(result, 'data') and len(result.data) > 0:
+                # Get the URL from the response
+                image_url = result.data[0].url if hasattr(result.data[0], 'url') else None
+                
+                if image_url:
+                    logger.info("Successfully generated persona image")
+                    return image_url
+                else:
+                    logger.warning("Image generation succeeded but no URL returned")
+                    return await self._create_persona_fallback_image(age_range, location, interests)
             else:
-                return await self._mock_image_generation(age_range, location, interests)
+                logger.warning("Image generation returned empty result")
+                return await self._create_persona_fallback_image(age_range, location, interests)
                 
         except Exception as e:
             logger.error(f"Real image generation failed: {e}")
-            return await self._mock_image_generation(age_range, location, interests)
+            return await self._create_persona_fallback_image(age_range, location, interests)
     
     async def _mock_image_generation(self, age_range: str, location: str, interests: List[str]) -> str:
         """Mock image generation with placeholder"""
