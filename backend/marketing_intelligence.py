@@ -555,15 +555,98 @@ class NewsSearchService:
         # Always use RSS feeds for recent, real news
         return await self._rss_news_search(location, interests, age_range)
     
-    async def _real_news_search(self, location: str, interests: List[str], age_range: str) -> Dict[str, Any]:
-        """Real news search using Brave Search API"""
+    async def _rss_news_search(self, location: str, interests: List[str], age_range: str) -> Dict[str, Any]:
+        """RSS-based news search for recent, real articles"""
         try:
-            # This would implement actual Brave Search API calls
-            # For now, return enhanced mock data to show the structure
-            return await self._mock_news_search(location, interests, age_range)
+            # Fetch recent articles from RSS feeds
+            recent_articles = await self._fetch_rss_articles(interests)
+            
+            if not recent_articles:
+                # Use fallback news if RSS feeds fail
+                recent_articles = self.rss_service.fallback_news
+                logger.warning("RSS feeds unavailable, using fallback news")
+            
+            # Categorize articles
+            categorized_news = self.rss_service.categorization_service.process_news_articles(recent_articles[:8])
+            
+            # Generate actionable insights
+            insights = self._generate_marketing_insights(recent_articles, location, interests, age_range)
+            
+            return {
+                "news_results": categorized_news,
+                "insights": insights
+            }
+            
         except Exception as e:
-            logger.error(f"Real news search failed: {e}")
+            logger.error(f"RSS news search failed: {e}")
             return await self._mock_news_search(location, interests, age_range)
+    
+    async def _fetch_rss_articles(self, interests: List[str]) -> List[Dict[str, Any]]:
+        """Fetch recent articles from RSS feeds based on interests"""
+        
+        articles = []
+        
+        try:
+            # Determine which RSS feeds to use based on interests
+            relevant_feeds = []
+            
+            for interest in interests:
+                interest_lower = interest.lower()
+                if any(tech_term in interest_lower for tech_term in ['tech', 'ai', 'digital', 'software', 'innovation']):
+                    relevant_feeds.extend(self.rss_service.rss_feeds["technology"])
+                elif any(biz_term in interest_lower for biz_term in ['business', 'marketing', 'finance', 'entrepreneur']):
+                    relevant_feeds.extend(self.rss_service.rss_feeds["business"])
+                    relevant_feeds.extend(self.rss_service.rss_feeds["marketing"])
+            
+            # If no specific interests match, use general feeds
+            if not relevant_feeds:
+                relevant_feeds = self.rss_service.rss_feeds["general"]
+            
+            # Remove duplicates and limit to 3 feeds for performance
+            relevant_feeds = list(set(relevant_feeds))[:3]
+            
+            # Fetch articles from each feed
+            for feed_url in relevant_feeds:
+                try:
+                    # Parse RSS feed
+                    feed = feedparser.parse(feed_url)
+                    
+                    # Extract recent articles (last 2 weeks)
+                    cutoff_date = datetime.now() - timedelta(days=14)
+                    
+                    for entry in feed.entries[:5]:  # Top 5 from each feed
+                        # Parse publication date
+                        pub_date = datetime.now()
+                        if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                            try:
+                                pub_date = datetime(*entry.published_parsed[:6])
+                            except (TypeError, ValueError):
+                                pass
+                        
+                        # Only include recent articles
+                        if pub_date >= cutoff_date:
+                            article = {
+                                "title": entry.get('title', 'No Title'),
+                                "summary": entry.get('summary', entry.get('description', 'No summary available'))[:200],
+                                "url": entry.get('link', ''),
+                                "published": pub_date.strftime("%Y-%m-%d"),
+                                "source": feed.feed.get('title', 'Unknown Source')[:30]
+                            }
+                            articles.append(article)
+                    
+                except Exception as feed_error:
+                    logger.warning(f"Failed to parse RSS feed {feed_url}: {feed_error}")
+                    continue
+            
+            # Sort by publication date (newest first)
+            articles.sort(key=lambda x: x['published'], reverse=True)
+            
+            # Return top 8 most recent articles
+            return articles[:8]
+            
+        except Exception as e:
+            logger.error(f"Error fetching RSS articles: {e}")
+            return []
     
     async def _mock_news_search(self, location: str, interests: List[str], age_range: str) -> Dict[str, Any]:
         """Mock news search with realistic data"""
