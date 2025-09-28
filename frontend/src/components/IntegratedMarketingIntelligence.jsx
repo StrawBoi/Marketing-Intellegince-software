@@ -57,6 +57,20 @@ const IntegratedMarketingIntelligence = () => {
   const [braveApiKey, setBraveApiKey] = useState('');
   const [adminKey, setAdminKey] = useState('');
 
+  // Phase 6: Performance Tracking state
+  const [showPerformanceModal, setShowPerformanceModal] = useState(false);
+  const [selectedCampaignForMetrics, setSelectedCampaignForMetrics] = useState(null);
+  const [performanceMetrics, setPerformanceMetrics] = useState({
+    clicks: '',
+    conversions: '',
+    spend: '',
+    date_recorded: new Date().toISOString().split('T')[0]
+  });
+  const [performanceAnalysis, setPerformanceAnalysis] = useState(null);
+  const [showPerformanceAnalysis, setShowPerformanceAnalysis] = useState(false);
+  const [isSubmittingMetrics, setIsSubmittingMetrics] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
   // Initialize component based on URL params
   useEffect(() => {
     const dashboardParam = searchParams.get('dashboard');
