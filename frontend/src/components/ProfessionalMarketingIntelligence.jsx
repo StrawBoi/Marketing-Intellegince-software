@@ -654,13 +654,9 @@ const ProfessionalMarketingIntelligence = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
           {/* Professional Navigation */}
           <TabsList className="grid w-full grid-cols-4 h-14 bg-white shadow-sm rounded-xl p-2">
-            <TabsTrigger value="generator" className="flex items-center gap-2 text-sm font-medium">
-              <Zap className="w-4 h-4" />
-              Generator
-            </TabsTrigger>
             <TabsTrigger value="insights" className="flex items-center gap-2 text-sm font-medium">
-              <Eye className="w-4 h-4" />
-              Insights
+              <Brain className="w-4 h-4" />
+              AI Intelligence
             </TabsTrigger>
             <TabsTrigger value="performance" className="flex items-center gap-2 text-sm font-medium">
               <BarChart3 className="w-4 h-4" />
@@ -669,6 +665,10 @@ const ProfessionalMarketingIntelligence = () => {
             <TabsTrigger value="campaigns" className="flex items-center gap-2 text-sm font-medium">
               <Activity className="w-4 h-4" />
               Campaigns
+            </TabsTrigger>
+            <TabsTrigger value="profile" className="flex items-center gap-2 text-sm font-medium">
+              <Users className="w-4 h-4" />
+              Profile
             </TabsTrigger>
           </TabsList>
 
