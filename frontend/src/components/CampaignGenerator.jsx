@@ -45,7 +45,7 @@ const CampaignGenerator = () => {
 
   const handleGenerateCampaign = async () => {
     if (!customerPersona.trim() || !productDescription.trim()) {
-      toast.error('Please fill in both Customer Persona and Product Description');
+      toast.error('Please fill in Customer Persona and Product Description');
       return;
     }
 
@@ -55,7 +55,9 @@ const CampaignGenerator = () => {
     try {
       const response = await axios.post(`${API}/generate-campaign`, {
         customer_persona: customerPersona,
-        product_description: productDescription
+        product_description: productDescription,
+        geographic_location: geographicLocation.trim(),
+        interests: interests.trim()
       });
 
       setGeneratedContent(response.data.generated_content);
