@@ -393,29 +393,33 @@ async def get_status_checks():
 async def generate_campaign_content(request: CampaignRequest):
     """Generate personalized campaign content based on customer persona and product description"""
     try:
-        # Placeholder content generation - will be replaced with AI in later phases
+        # Enhanced placeholder content generation with new fields
+        location_text = f" in {request.geographic_location}" if request.geographic_location else ""
+        interests_text = f"\n\n**Tailored Interests**: We noticed your interest in {request.interests}. Our solution aligns perfectly with these passions and can enhance your experience in these areas." if request.interests else ""
+        
         generated_content = f"""
-🎯 **Personalized Campaign for {request.customer_persona}**
+🎯 **Personalized Campaign for {request.customer_persona}{location_text}**
 
 **Headline:** Transform Your Experience with Our Premium Solution
 
 **Body:** 
-Dear valued customer,
+Dear valued customer{location_text},
 
 Based on your profile as {request.customer_persona}, we've crafted a special message just for you about our {request.product_description}.
 
 Our research shows that customers like you value quality, innovation, and results. That's exactly what we deliver.
+{interests_text}
 
 **Key Benefits:**
-• Tailored specifically for your needs
-• Proven results from similar customers  
+• Tailored specifically for your needs and location
+• Proven results from similar customers in your region
 • Premium quality you can trust
 • Dedicated support when you need it
 
 **Call to Action:** 
 Ready to see the difference? Join thousands of satisfied customers who've already made the smart choice.
 
-*This is a placeholder campaign generated in Phase 1 - AI integration coming in future phases.*
+*This is an enhanced campaign generated in Phase 2C with geographic and interest targeting - AI integration coming in future phases.*
         """
         
         # Create campaign object
