@@ -27,7 +27,9 @@ import {
   Star,
   Award,
   Cpu,
-  Layers
+  Layers,
+  Check,
+  Settings
 } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
