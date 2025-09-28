@@ -460,6 +460,38 @@ async def get_campaign(campaign_id: str):
         raise HTTPException(status_code=500, detail="Failed to fetch campaign")
 
 
+# New Phase 2A - Advanced Analysis Endpoint
+@api_router.post("/generate/analysis", response_model=AnalysisResponse)
+async def generate_advanced_analysis(request: AnalysisRequest):
+    """Generate advanced persona analysis including behavior, color psychology, and trending words"""
+    try:
+        logger.info(f"Generating advanced analysis for persona: {request.persona[:50]}...")
+        
+        # Generate behavioral analysis
+        behavior_summary = analyze_persona_behavior(request.persona, request.product_description)
+        
+        # Generate color palette based on psychology
+        color_palette = generate_color_palette(request.persona)
+        
+        # Generate trending words
+        trending_words = generate_trending_words(request.persona)
+        
+        # Create response object
+        analysis_response = AnalysisResponse(
+            behavior_analysis_summary=behavior_summary,
+            color_palette=color_palette,
+            trending_words=trending_words
+        )
+        
+        logger.info(f"Successfully generated analysis with {len(color_palette)} colors and {len(trending_words)} trending words")
+        
+        return analysis_response
+        
+    except Exception as e:
+        logger.error(f"Error generating advanced analysis: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to generate advanced analysis")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
