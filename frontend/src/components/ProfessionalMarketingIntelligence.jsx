@@ -918,6 +918,27 @@ const ProfessionalMarketingIntelligence = () => {
             {renderAIIntelligence()}
           </TabsContent>
 
+          {/* Persona Builder Tab */}
+          <TabsContent value="persona">
+            <CustomerPersonaTemplate
+              onPersonaGenerate={(personaData) => {
+                // Convert persona template data to AI intelligence format
+                setAgeRange(personaData.age_range);
+                setGeographicLocation(personaData.location);
+                setInterests(`${personaData.interests}, ${personaData.pain_points}, ${personaData.common_activities}`);
+                
+                // Auto-generate intelligence with the persona data
+                toast.success('Persona data loaded! Generating AI intelligence...');
+                setActiveTab('insights');
+                
+                // Trigger AI generation after small delay
+                setTimeout(() => {
+                  handleGenerateIntelligence();
+                }, 500);
+              }}
+            />
+          </TabsContent>
+
           {/* Performance Tab */}
           <TabsContent value="performance">
             {renderPerformanceTab()}
