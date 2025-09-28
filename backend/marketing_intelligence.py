@@ -434,6 +434,7 @@ class NewsSearchService:
     """News search service with mock and real API support"""
     
     def __init__(self):
+        self.categorization_service = NewsCategorizationService()
         self.mock_news_data = {
             "technology": [
                 {
