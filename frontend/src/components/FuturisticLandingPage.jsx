@@ -108,17 +108,18 @@ const FuturisticLandingPage = () => {
           <div className="space-x-4">
             <Button 
               variant="outline" 
-              onClick={() => navigate('/intelligence')}
+              onClick={handleDemoWalkthrough}
               className="border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/10 backdrop-blur-sm bg-white/5 hover:scale-105 transition-all duration-200"
             >
-              <Star className="w-4 h-4 mr-2" />
-              Try Professional
+              <Eye className="w-4 h-4 mr-2" />
+              View Demo
             </Button>
             <Button 
-              onClick={() => navigate('/intelligence')}
+              onClick={() => setShowAuth(true)}
               className="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:from-cyan-600 hover:via-purple-600 hover:to-pink-600 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
             >
-              Launch AI Platform
+              <LogIn className="w-4 h-4 mr-2" />
+              Sign In / Sign Up
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
