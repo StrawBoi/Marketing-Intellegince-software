@@ -243,7 +243,7 @@ def generate_color_palette(persona: str, geographic_location: Optional[str] = No
     # Return 3-5 colors maximum
     return colors[:5]
 
-def generate_trending_words(persona: str) -> List[str]:
+def generate_trending_words(persona: str, geographic_location: Optional[str] = None, interests: Optional[str] = None) -> List[str]:
     """Generate trending words and phrases relevant to the persona"""
     
     persona_lower = persona.lower()
