@@ -109,7 +109,7 @@ const MarketingIntelligence = () => {
         config.perplexity_api_key = perplexityApiKey;
       }
 
-      const response = await axios.post(`${BACKEND_URL}/admin/configure-apis`, config, {
+      const response = await axios.post(`${API}/admin/configure-apis`, config, {
         headers: {
           'X-Admin-Key': adminKey
         }
