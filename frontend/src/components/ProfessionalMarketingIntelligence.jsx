@@ -1126,6 +1126,27 @@ const ProfessionalMarketingIntelligence = () => {
             </div>
           </TabsContent>
         </Tabs>
+        )}
+
+        {/* Authentication Modal */}
+        <AuthenticationMenu
+          isVisible={showAuth}
+          onClose={() => setShowAuth(false)}
+          onLogin={(userData) => {
+            setUser(userData);
+            setIsAuthenticated(true);
+            setShowAuth(false);
+            localStorage.setItem('marketingProUser', JSON.stringify(userData));
+            toast.success(`Welcome ${userData.name}!`);
+          }}
+          onSignup={(userData) => {
+            setUser(userData);
+            setIsAuthenticated(true);
+            setShowAuth(false);
+            localStorage.setItem('marketingProUser', JSON.stringify(userData));
+            toast.success(`Account created for ${userData.name}!`);
+          }}
+        />
       </div>
     </div>
   );
