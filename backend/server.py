@@ -167,7 +167,7 @@ def analyze_persona_behavior(persona: str, product_description: str, geographic_
         # Fallback generic analysis
         return """**General Analysis**: This persona likely values practical solutions that address specific needs. They respond well to clear value propositions, social proof through testimonials, and transparent communication. Decision-making is influenced by perceived benefits, ease of implementation, and alignment with personal or professional goals. They prefer authentic, straightforward messaging over overly promotional content."""
 
-def generate_color_palette(persona: str) -> List[ColorInfo]:
+def generate_color_palette(persona: str, geographic_location: Optional[str] = None, interests: Optional[str] = None) -> List[ColorInfo]:
     """Generate color palette based on color psychology and persona characteristics"""
     
     persona_lower = persona.lower()
