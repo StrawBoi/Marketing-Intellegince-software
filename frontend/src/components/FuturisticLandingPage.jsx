@@ -286,6 +286,14 @@ const FuturisticLandingPage = () => {
           </p>
         </div>
       </footer>
+
+      {/* Authentication Modal */}
+      <AuthenticationMenu
+        isVisible={showAuth}
+        onClose={() => setShowAuth(false)}
+        onLogin={handleLogin}
+        onSignup={handleSignup}
+      />
     </div>
   );
 };
