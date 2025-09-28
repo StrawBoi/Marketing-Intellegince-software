@@ -18,7 +18,16 @@ import {
   History,
   RefreshCw,
   Zap,
-  Clock
+  Clock,
+  BarChart3,
+  TrendingUp,
+  DollarSign,
+  Target,
+  Activity,
+  X,
+  Calendar,
+  MousePointer,
+  ShoppingCart
 } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
