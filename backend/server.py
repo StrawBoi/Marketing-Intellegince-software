@@ -747,9 +747,11 @@ app.include_router(api_router)
 # Include marketing intelligence and admin routers
 from marketing_endpoints import router as marketing_router
 from admin_config import router as admin_router
+from geographical_service import geo_router
 
 app.include_router(marketing_router)
 app.include_router(admin_router)
+app.include_router(geo_router)
 
 app.add_middleware(
     CORSMiddleware,
