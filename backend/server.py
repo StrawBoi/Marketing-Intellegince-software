@@ -160,6 +160,60 @@ def analyze_persona_behavior(persona: str, product_description: str, geographic_
     
     analysis_parts.append(motivation_analysis)
     
+    # Geographic and cultural analysis
+    if geographic_location:
+        location_lower = geographic_location.lower()
+        location_analysis = "**Geographic Insights**: "
+        
+        # Regional preferences
+        if any(region in location_lower for region in ['uk', 'london', 'britain', 'england']):
+            location_analysis += "UK market values understated confidence, quality craftsmanship, and subtle premium positioning. Prefers polite, professional tone with heritage references. "
+        elif any(region in location_lower for region in ['new york', 'nyc', 'manhattan']):
+            location_analysis += "NYC market values speed, efficiency, and bold innovation. Responds to direct, confident messaging with competitive advantages. Fast-paced decision making. "
+        elif any(region in location_lower for region in ['california', 'san francisco', 'bay area', 'silicon valley']):
+            location_analysis += "California tech market values innovation, sustainability, and forward-thinking solutions. Prefers authentic, purpose-driven messaging with social impact. "
+        elif any(region in location_lower for region in ['texas', 'austin', 'dallas', 'houston']):
+            location_analysis += "Texas market values practicality, value, and straightforward communication. Prefers results-focused messaging with clear ROI and no-nonsense approach. "
+        elif any(region in location_lower for region in ['germany', 'berlin', 'munich']):
+            location_analysis += "German market values precision, quality, and thorough documentation. Prefers detailed, fact-based messaging with engineering excellence and reliability focus. "
+        elif any(region in location_lower for region in ['japan', 'tokyo', 'osaka']):
+            location_analysis += "Japanese market values respect, quality, and continuous improvement. Prefers polite, service-oriented messaging with attention to detail and customer care. "
+        elif any(region in location_lower for region in ['australia', 'sydney', 'melbourne']):
+            location_analysis += "Australian market values authenticity, fairness, and practical solutions. Prefers friendly, direct messaging without pretension or excessive formality. "
+        else:
+            location_analysis += f"Local market preferences in {geographic_location} should be considered for cultural alignment and regional business practices. "
+        
+        analysis_parts.append(location_analysis)
+    
+    # Interest-based behavioral insights
+    if interests:
+        interests_lower = interests.lower()
+        interests_analysis = "**Interest-Based Behavior**: "
+        
+        interest_patterns = {
+            'sustainability': "Environmentally conscious, values long-term thinking, influenced by social responsibility messaging, prefers brands with clear sustainability practices.",
+            'fitness': "Health-focused, goal-oriented, values performance metrics and results, responsive to achievement-based messaging and progress tracking.",
+            'technology': "Early adopter, values innovation and efficiency, comfortable with technical details, influenced by cutting-edge features and future-forward messaging.",
+            'travel': "Experience-focused, values freedom and flexibility, influenced by lifestyle messaging, responsive to adventure and discovery themes.",
+            'cooking': "Detail-oriented, values quality ingredients and processes, appreciates craftsmanship, responsive to artisanal and premium positioning.",
+            'art': "Creative and expressive, values authenticity and uniqueness, influenced by aesthetic appeal, responsive to customization and personal expression.",
+            'music': "Emotionally driven, values authentic expression, influenced by brand personality and tone, responsive to community and cultural messaging.",
+            'reading': "Intellectually curious, values depth and expertise, influenced by authoritative content, responsive to educational and thought leadership messaging.",
+            'gaming': "Achievement-oriented, values engagement and progression, influenced by interactive experiences, responsive to gamification and competitive elements."
+        }
+        
+        matched_interests = []
+        for interest, behavior in interest_patterns.items():
+            if interest in interests_lower:
+                matched_interests.append(behavior)
+        
+        if matched_interests:
+            interests_analysis += " ".join(matched_interests[:2])  # Limit to avoid too much text
+        else:
+            interests_analysis += "Specific interests indicate focused lifestyle choices that influence purchasing decisions and brand loyalty patterns."
+        
+        analysis_parts.append(interests_analysis)
+    
     # Combine all analysis parts
     if analysis_parts:
         return "\n\n".join(analysis_parts)
