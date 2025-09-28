@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LandingPage from "./components/LandingPage";
+import FuturisticLandingPage from "./components/FuturisticLandingPage";
 import CampaignGenerator from "./components/CampaignGenerator";
 import IntegratedMarketingIntelligence from "./components/IntegratedMarketingIntelligence";
 import ProfessionalMarketingIntelligence from "./components/ProfessionalMarketingIntelligence";
@@ -12,7 +12,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<FuturisticLandingPage />} />
           <Route path="/generator" element={<CampaignGenerator />} />
           <Route path="/intelligence" element={<ProfessionalMarketingIntelligence />} />
           <Route path="/legacy" element={<IntegratedMarketingIntelligence />} />
