@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import os
 from marketing_intelligence import api_config
 
-router = APIRouter(prefix="/admin", tags=["Admin Configuration"])
+router = APIRouter(prefix="/api/admin", tags=["Admin Configuration"])
 
 class APIConfigUpdate(BaseModel):
     use_real_apis: bool
