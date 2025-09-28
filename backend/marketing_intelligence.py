@@ -768,17 +768,39 @@ class MarketingIntelligenceCore:
                 persona_analysis, news_data, age_range, interests
             )
             
-            # Compile complete response
+            # Step 5: Process data for advanced visualizations (Phase 3A)
+            
+            # Generate word cloud data
+            trending_keywords = persona_analysis["trending_keywords_analysis"]["keywords"]
+            word_cloud_data = self.word_cloud_processor.generate_word_cloud_data(
+                trending_keywords, persona_analysis
+            )
+            
+            # Generate behavioral analysis chart data
+            behavioral_chart_data = self.behavioral_processor.generate_behavioral_chart_data(
+                age_range, interests, geographic_location
+            )
+            
+            # Generate demographic breakdown
+            demographic_data = self.behavioral_processor.generate_demographic_breakdown(
+                age_range, geographic_location, interests
+            )
+            
+            # Compile complete response with new Phase 3A data
             response = {
                 "trending_keywords_analysis": persona_analysis["trending_keywords_analysis"],
                 "news_insights": {
                     "summary": news_data["insights"]["summary"],
                     "actionable_recommendations": news_data["insights"]["actionable_recommendations"],
                     "trending_topics": news_data["insights"]["trending_topics"],
-                    "recent_articles": news_data["news_results"][:3]  # Top 3 articles
+                    "recent_articles": news_data["news_results"]  # Now includes categories
                 },
                 "persona_image_url": persona_image_url,
                 "ad_copy_variations": ad_copy_variations,
+                # Phase 3A: New visualization data
+                "word_cloud_data": word_cloud_data,
+                "behavioral_analysis_chart": behavioral_chart_data,
+                "demographic_breakdown": demographic_data,
                 "metadata": {
                     "generated_at": datetime.utcnow().isoformat(),
                     "api_mode": "real" if api_config.use_real_apis else "mock",
@@ -786,7 +808,8 @@ class MarketingIntelligenceCore:
                         "age_range": age_range,
                         "location": geographic_location,
                         "interests": interests
-                    }
+                    },
+                    "data_version": "3A"  # Track data structure version
                 }
             }
             
