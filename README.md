@@ -29,8 +29,8 @@ Marketing Intelligence Pro isn't just another marketing tool—it's a **scientif
 
 | Feature | Benefit | Impact |
 |---------|---------|---------|
-| **AI behavioral Analysis** | Deep psychological customer profiling | **+324.5% Average ROI** |
-| **Color Psychology Engine** | Scientifically-backed design recommendations | **+95% Engagement Accuracy** |
+| **AI behavioral Analysis** | Deep psychological customer profiling  |
+| **Color Psychology Engine** | Scientifically-backed design recommendations  |
 | **Strategic Performance Metrics** | AI-driven optimization insights | **3.2x Faster Campaign Creation** |
 | **Multi-Platform Intelligence** | Cross-platform campaign optimization | **Universal Marketing Reach** |
 
@@ -40,7 +40,7 @@ Marketing Intelligence Pro isn't just another marketing tool—it's a **scientif
 
 ### **1. Behavioral Analysis Engine**
 - **Deep Psychological Profiling**: Advanced AI algorithms analyze customer behavior patterns
-- **Predictive Engagement**: Forecast customer responses with 95% accuracy
+- **Predictive Engagement**: Forecast customer responses 
 - **Motivation Mapping**: Understand the "why" behind customer decisions
 - **Visual Data Representation**: Interactive charts and behavioral insights
 
