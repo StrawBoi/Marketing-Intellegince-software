@@ -834,6 +834,35 @@ const ProfessionalMarketingIntelligence = () => {
       </header>
 
       <div className="container mx-auto px-6 py-8">
+        {!isAuthenticated ? (
+          <div className="text-center py-20">
+            <div className="max-w-md mx-auto">
+              <Card className="shadow-xl border-0">
+                <CardHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-t-lg">
+                  <CardTitle className="text-xl flex items-center justify-center gap-2">
+                    <Brain className="w-6 h-6" />
+                    Marketing Intelligence Pro
+                  </CardTitle>
+                  <CardDescription className="text-white/90">
+                    Please sign in to access the professional platform
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-8 text-center">
+                  <p className="text-slate-600 mb-6">
+                    Access advanced AI-powered marketing intelligence, behavioral analysis, and performance tracking tools.
+                  </p>
+                  <Button
+                    onClick={() => setShowAuth(true)}
+                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-3"
+                  >
+                    <Users className="w-5 h-5 mr-2" />
+                    Sign In / Sign Up
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
           {/* Professional Navigation */}
           <TabsList className="grid w-full grid-cols-5 h-14 bg-white shadow-sm rounded-xl p-2">
