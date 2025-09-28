@@ -637,6 +637,110 @@ async def generate_advanced_analysis(request: AnalysisRequest):
         raise HTTPException(status_code=500, detail="Failed to generate advanced analysis")
 
 
+# Phase 3A: Campaign History Endpoints
+@api_router.post("/campaigns/save", response_model=CampaignHistoryResponse)
+async def save_campaign_to_history(campaign_data: CampaignHistoryCreate):
+    """Save a generated campaign to history"""
+    try:
+        # Generate a descriptive title
+        interests_str = ", ".join(campaign_data.interests[:3])  # First 3 interests
+        title = f"{campaign_data.age_range} | {campaign_data.geographic_location} | {interests_str}"
+        
+        # Create campaign history object
+        history_entry = CampaignHistoryResponse(
+            age_range=campaign_data.age_range,
+            geographic_location=campaign_data.geographic_location,
+            interests=campaign_data.interests,
+            intelligence_data=campaign_data.intelligence_data,
+            title=title
+        )
+        
+        # Store in database
+        history_dict = history_entry.dict()
+        history_dict = prepare_for_mongo(history_dict)
+        await db.campaign_history.insert_one(history_dict)
+        
+        logger.info(f"Campaign saved to history: {title}")
+        return history_entry
+        
+    except Exception as e:
+        logger.error(f"Error saving campaign to history: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to save campaign to history")
+
+@api_router.get("/history", response_model=CampaignHistoryList)
+async def get_campaign_history(page: int = 1, limit: int = 10, search: Optional[str] = None):
+    """Get campaign history with pagination and search"""
+    try:
+        skip = (page - 1) * limit
+        
+        # Build query filter
+        query_filter = {}
+        if search:
+            # Search in title, age_range, geographic_location, or interests
+            query_filter = {
+                "$or": [
+                    {"title": {"$regex": search, "$options": "i"}},
+                    {"age_range": {"$regex": search, "$options": "i"}},
+                    {"geographic_location": {"$regex": search, "$options": "i"}},
+                    {"interests": {"$in": [{"$regex": search, "$options": "i"}]}}
+                ]
+            }
+        
+        # Get total count
+        total_count = await db.campaign_history.count_documents(query_filter)
+        
+        # Get campaigns with pagination
+        campaigns = await db.campaign_history.find(query_filter).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+        
+        # Parse datetime fields
+        parsed_campaigns = [parse_from_mongo(campaign) for campaign in campaigns]
+        campaign_responses = [CampaignHistoryResponse(**campaign) for campaign in parsed_campaigns]
+        
+        return CampaignHistoryList(
+            campaigns=campaign_responses,
+            total_count=total_count,
+            page=page,
+            limit=limit
+        )
+        
+    except Exception as e:
+        logger.error(f"Error fetching campaign history: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch campaign history")
+
+@api_router.get("/history/{campaign_id}", response_model=CampaignHistoryResponse)
+async def get_campaign_by_id(campaign_id: str):
+    """Get a specific campaign from history by ID"""
+    try:
+        campaign = await db.campaign_history.find_one({"id": campaign_id})
+        if not campaign:
+            raise HTTPException(status_code=404, detail="Campaign not found")
+        
+        campaign = parse_from_mongo(campaign)
+        return CampaignHistoryResponse(**campaign)
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching campaign {campaign_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch campaign")
+
+@api_router.delete("/history/{campaign_id}")
+async def delete_campaign_from_history(campaign_id: str):
+    """Delete a campaign from history"""
+    try:
+        result = await db.campaign_history.delete_one({"id": campaign_id})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Campaign not found")
+        
+        return {"message": "Campaign deleted successfully", "campaign_id": campaign_id}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting campaign {campaign_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to delete campaign")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
