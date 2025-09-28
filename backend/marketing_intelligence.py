@@ -677,25 +677,57 @@ class ImageGenerationService:
         return prompt.strip()
 
 class AdCopyGenerator:
-    """AI-powered ad copy generation service"""
+    """AI-powered professional ad copy generation service"""
     
     def __init__(self):
         self.platform_templates = {
             "instagram": {
                 "style": "visual, trendy, hashtag-friendly",
-                "length": 50,
-                "tone": "casual, engaging, visual-focused"
+                "tone": "casual, engaging, visual-focused",
+                "cta_options": ["Shop Now", "Learn More", "Discover", "Get Started", "Explore"]
             },
             "linkedin": {
-                "style": "professional, results-oriented, business-focused",
-                "length": 50,
-                "tone": "authoritative, professional, value-driven"
+                "style": "professional, results-oriented, business-focused", 
+                "tone": "authoritative, professional, value-driven",
+                "cta_options": ["Learn More", "Get Started", "Request Demo", "Contact Sales", "Download Now"]
             },
             "tiktok": {
                 "style": "trendy, informal, entertainment-focused",
-                "length": 50,
-                "tone": "playful, energetic, trend-aware"
+                "tone": "playful, energetic, trend-aware",
+                "cta_options": ["Try Now", "Check It Out", "Get Started", "Join Us", "Discover More"]
             }
+        }
+        
+        # Professional ad copy templates
+        self.headline_templates = {
+            "instagram": [
+                "Transform Your {interest} Game with {keyword}",
+                "The {keyword} Solution {demographic} Love",
+                "Discover Why {location} Chooses {keyword}",
+                "{keyword} Made Simple for {demographic}"
+            ],
+            "linkedin": [
+                "Drive Results with {keyword} Solutions",
+                "Why {demographic} Trust Our {keyword} Expertise",
+                "Proven {keyword} Strategies for {demographic}",
+                "Unlock {keyword} Success for Your Business"
+            ],
+            "tiktok": [
+                "POV: You Found the Best {keyword} Ever",
+                "This {keyword} Trick Changes Everything",
+                "{demographic} Are Obsessed with This {keyword}",
+                "The {keyword} Everyone's Talking About"
+            ]
+        }
+        
+        # Color psychology database
+        self.color_psychology = {
+            "trust": {"colors": ["#2563EB", "#1E40AF", "#3B82F6"], "psychology": "Blue evokes trust, reliability, and professionalism - perfect for building consumer confidence."},
+            "energy": {"colors": ["#DC2626", "#EF4444", "#F97316"], "psychology": "Red and orange create urgency and excitement, driving immediate action and engagement."},
+            "growth": {"colors": ["#16A34A", "#22C55E", "#15803D"], "psychology": "Green represents growth, prosperity, and harmony - ideal for success-oriented messaging."},
+            "luxury": {"colors": ["#7C3AED", "#A855F7", "#1F2937"], "psychology": "Purple and dark tones convey luxury, sophistication, and premium quality."},
+            "innovation": {"colors": ["#06B6D4", "#0EA5E9", "#8B5CF6"], "psychology": "Cyan and purple suggest innovation, creativity, and forward-thinking technology."},
+            "warmth": {"colors": ["#F59E0B", "#FBBF24", "#F97316"], "psychology": "Warm oranges and yellows create friendly, approachable feelings and positive associations."}
         }
     
     async def generate_ad_copy(self, persona_analysis: Dict, news_insights: Dict, age_range: str, interests: List[str]) -> Dict[str, str]:
