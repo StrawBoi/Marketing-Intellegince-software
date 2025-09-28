@@ -836,10 +836,14 @@ const ProfessionalMarketingIntelligence = () => {
       <div className="container mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
           {/* Professional Navigation */}
-          <TabsList className="grid w-full grid-cols-4 h-14 bg-white shadow-sm rounded-xl p-2">
+          <TabsList className="grid w-full grid-cols-5 h-14 bg-white shadow-sm rounded-xl p-2">
             <TabsTrigger value="insights" className="flex items-center gap-2 text-sm font-medium">
               <Brain className="w-4 h-4" />
               AI Intelligence
+            </TabsTrigger>
+            <TabsTrigger value="persona" className="flex items-center gap-2 text-sm font-medium">
+              <Camera className="w-4 h-4" />
+              Persona Builder
             </TabsTrigger>
             <TabsTrigger value="performance" className="flex items-center gap-2 text-sm font-medium">
               <BarChart3 className="w-4 h-4" />
