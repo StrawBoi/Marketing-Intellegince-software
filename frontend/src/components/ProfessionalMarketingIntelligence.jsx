@@ -72,17 +72,22 @@ const ProfessionalMarketingIntelligence = () => {
   
   // UI state
   const [activeTab, setActiveTab] = useState('insights');
+  const [showAuth, setShowAuth] = useState(false);
+  const [showPersonaTemplate, setShowPersonaTemplate] = useState(false);
   
   // Authentication state
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // For demo purposes
-  const [user, setUser] = useState({
-    name: 'Marketing Pro',
-    email: 'demo@marketingpro.com',
-    avatar: 'MP',
-    subscription: 'Professional',
-    campaigns: 24,
-    totalROI: 324.5
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Check for stored user data
+    const storedUser = localStorage.getItem('marketingProUser');
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
+      setUser(userData);
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   useEffect(() => {
     loadCampaignHistory();
