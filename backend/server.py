@@ -75,6 +75,28 @@ class AnalysisResponse(BaseModel):
     color_palette: List[ColorInfo] = Field(..., description="Color palette based on psychology")
     trending_words: List[str] = Field(..., description="Trending words for the persona")
 
+# Phase 3A: Campaign History Models
+class CampaignHistoryCreate(BaseModel):
+    age_range: str = Field(..., description="Age range of target persona")
+    geographic_location: str = Field(..., description="Geographic location")
+    interests: List[str] = Field(..., description="List of interests")
+    intelligence_data: Dict[str, Any] = Field(..., description="Generated intelligence data")
+
+class CampaignHistoryResponse(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    age_range: str
+    geographic_location: str
+    interests: List[str]
+    intelligence_data: Dict[str, Any]
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    title: str = Field(..., description="Auto-generated title for the campaign")
+    
+class CampaignHistoryList(BaseModel):
+    campaigns: List[CampaignHistoryResponse]
+    total_count: int
+    page: int
+    limit: int
+
 
 # Advanced Analysis Logic Functions
 def analyze_persona_behavior(persona: str, product_description: str, geographic_location: Optional[str] = None, interests: Optional[str] = None) -> str:
