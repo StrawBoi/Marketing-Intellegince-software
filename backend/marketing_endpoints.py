@@ -29,7 +29,7 @@ class MarketingIntelligenceResponse(BaseModel):
     trending_keywords_analysis: Dict[str, Any]
     news_insights: Dict[str, Any] 
     persona_image_url: str
-    ad_copy_variations: Dict[str, str]
+    ad_copy_variations: Dict[str, Any]  # Now contains structured ad copy with headline, body, keywords, CTA, colors
     # Phase 3A: New visualization data
     word_cloud_data: List[Dict[str, Any]]
     behavioral_analysis_chart: List[Dict[str, Any]]
