@@ -860,6 +860,124 @@ const ProfessionalMarketingIntelligence = () => {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Profile Tab */}
+          <TabsContent value="profile" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Profile Card */}
+              <Card className="shadow-xl border-0 bg-gradient-to-br from-slate-900 to-indigo-900 text-white">
+                <CardHeader className="text-center">
+                  <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    {user.avatar}
+                  </div>
+                  <CardTitle className="text-xl">{user.name}</CardTitle>
+                  <CardDescription className="text-white/70">{user.email}</CardDescription>
+                  <Badge variant="secondary" className="bg-white/20 text-white border-white/30 w-fit mx-auto mt-2">
+                    <Star className="w-3 h-3 mr-1" />
+                    {user.subscription}
+                  </Badge>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-white/80">Total Campaigns</span>
+                      <span className="font-semibold">{user.campaigns}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white/80">Average ROI</span>
+                      <span className="font-semibold text-green-300">{user.totalROI}%</span>
+                    </div>
+                    <Separator className="bg-white/20" />
+                    <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30">
+                      <Settings className="w-4 h-4 mr-2" />
+                      Account Settings
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Analytics Overview */}
+              <div className="lg:col-span-2 space-y-6">
+                <Card className="shadow-xl border-0">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <TrendingUp className="w-6 h-6 text-green-600" />
+                      Performance Overview
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg text-center">
+                        <div className="text-2xl font-bold text-blue-700">24</div>
+                        <div className="text-sm text-blue-600">Active Campaigns</div>
+                      </div>
+                      <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg text-center">
+                        <div className="text-2xl font-bold text-green-700">324.5%</div>
+                        <div className="text-sm text-green-600">Average ROI</div>
+                      </div>
+                      <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg text-center">
+                        <div className="text-2xl font-bold text-purple-700">156K</div>
+                        <div className="text-sm text-purple-600">Total Impressions</div>
+                      </div>
+                      <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg text-center">
+                        <div className="text-2xl font-bold text-orange-700">4.2%</div>
+                        <div className="text-sm text-orange-600">Avg. Conv. Rate</div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="shadow-xl border-0">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Award className="w-6 h-6 text-purple-600" />
+                      Subscription Benefits
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                          <Check className="w-4 h-4 text-green-600" />
+                        </div>
+                        <div>
+                          <div className="font-medium">Unlimited AI Intelligence Generation</div>
+                          <div className="text-sm text-slate-600">Generate unlimited marketing insights</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                          <Check className="w-4 h-4 text-green-600" />
+                        </div>
+                        <div>
+                          <div className="font-medium">Advanced Performance Analytics</div>
+                          <div className="text-sm text-slate-600">Deep dive into campaign performance</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                          <Check className="w-4 h-4 text-green-600" />
+                        </div>
+                        <div>
+                          <div className="font-medium">Multi-Platform Ad Generation</div>
+                          <div className="text-sm text-slate-600">Create ads for Instagram, LinkedIn, TikTok</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                          <Check className="w-4 h-4 text-green-600" />
+                        </div>
+                        <div>
+                          <div className="font-medium">Priority Support</div>
+                          <div className="text-sm text-slate-600">24/7 professional support</div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
     </div>
