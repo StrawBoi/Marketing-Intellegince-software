@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import WordCloud from 'react-wordcloud';
+// import WordCloud from 'react-wordcloud';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Cloud } from 'lucide-react';
