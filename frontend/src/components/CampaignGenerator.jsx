@@ -178,6 +178,44 @@ const CampaignGenerator = () => {
                   </p>
                 </div>
 
+                {/* Geographic Location Input */}
+                <div className="space-y-2">
+                  <Label htmlFor="location" className="text-base font-semibold text-slate-700 flex items-center">
+                    <MapPin className="w-4 h-4 mr-2 text-green-600" />
+                    Geographic Location
+                  </Label>
+                  <Input
+                    id="location"
+                    placeholder="e.g., London, UK or New York City, NY or San Francisco Bay Area"
+                    value={geographicLocation}
+                    onChange={(e) => setGeographicLocation(e.target.value)}
+                    className="focus-ring"
+                    data-testid="geographic-location-input"
+                  />
+                  <p className="text-sm text-slate-500">
+                    Specify the geographic location to tailor campaigns for regional preferences and cultural nuances
+                  </p>
+                </div>
+
+                {/* Interests Input */}
+                <div className="space-y-2">
+                  <Label htmlFor="interests" className="text-base font-semibold text-slate-700 flex items-center">
+                    <Heart className="w-4 h-4 mr-2 text-pink-600" />
+                    Interests
+                  </Label>
+                  <Input
+                    id="interests"
+                    placeholder="e.g., hiking, sustainability, digital art, cooking, fitness, technology"
+                    value={interests}
+                    onChange={(e) => setInterests(e.target.value)}
+                    className="focus-ring"
+                    data-testid="interests-input"
+                  />
+                  <p className="text-sm text-slate-500">
+                    List specific interests and hobbies to create more personalized and engaging content (comma-separated)
+                  </p>
+                </div>
+
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
                   <Button
