@@ -738,35 +738,201 @@ class AdCopyGenerator:
         else:
             return await self._mock_professional_ad_generation(persona_analysis, news_insights, age_range, interests, location)
     
-    async def _real_ad_generation(self, persona_analysis: Dict, news_insights: Dict, age_range: str, interests: List[str]) -> Dict[str, str]:
-        """Real ad copy generation using Emergent LLM"""
+    async def _real_professional_ad_generation(self, persona_analysis: Dict, news_insights: Dict, age_range: str, interests: List[str], location: str) -> Dict[str, Any]:
+        """Real professional ad copy generation using Emergent LLM"""
         try:
-            # This would use the LLM for real generation
-            # For now, return enhanced mock data
-            return await self._mock_ad_generation(persona_analysis, news_insights, age_range, interests)
+            from emergentintegrations.llm.openai.text_generation import OpenAITextGeneration
+            
+            # Initialize LLM
+            text_gen = OpenAITextGeneration(api_key=api_config.emergent_llm_key)
+            
+            # Get keywords and context
+            keywords = persona_analysis.get("trending_keywords_analysis", {}).get("keywords", [])
+            primary_keywords = keywords[:5] if keywords else ["innovative", "quality"]
+            
+            # Create comprehensive prompts for each platform
+            results = {}
+            
+            for platform in ["instagram", "linkedin", "tiktok"]:
+                prompt = self._create_professional_ad_prompt(
+                    platform, age_range, location, interests, primary_keywords, 
+                    persona_analysis, news_insights
+                )
+                
+                # Generate with LLM
+                response = await text_gen.generate_text(
+                    prompt=prompt,
+                    model="gpt-5",
+                    max_tokens=300,
+                    temperature=0.7
+                )
+                
+                # Parse structured response
+                results[platform] = self._parse_ad_copy_response(response, platform, primary_keywords)
+            
+            return results
+            
         except Exception as e:
-            logger.error(f"Real ad generation failed: {e}")
-            return await self._mock_ad_generation(persona_analysis, news_insights, age_range, interests)
+            logger.error(f"Real professional ad generation failed: {e}")
+            return await self._mock_professional_ad_generation(persona_analysis, news_insights, age_range, interests, location)
     
-    async def _mock_ad_generation(self, persona_analysis: Dict, news_insights: Dict, age_range: str, interests: List[str]) -> Dict[str, str]:
-        """Mock ad copy generation with realistic variations"""
+    def _create_professional_ad_prompt(self, platform: str, age_range: str, location: str, interests: List[str], keywords: List[str], persona_analysis: Dict, news_insights: Dict) -> str:
+        """Create comprehensive prompt for professional ad copy generation"""
         
-        # Extract key elements
-        keywords = persona_analysis.get("trending_keywords_analysis", {}).get("keywords", ["innovative", "quality"])
-        primary_keyword = keywords[0] if keywords else "amazing"
+        platform_info = self.platform_templates[platform]
+        interests_str = ", ".join(interests[:3])
+        keywords_str = ", ".join(keywords[:5])
         
-        # Generate platform-specific copy
-        instagram_copy = f"✨ Discover {primary_keyword} solutions that transform your {interests[0] if interests else 'lifestyle'}! Join thousands who've already made the switch. #Transform #Innovation #Quality"
+        prompt = f"""
+        You are a Senior Ad Copywriter with 15+ years of experience creating high-converting {platform.title()} ads. 
         
-        linkedin_copy = f"Drive results with {primary_keyword} strategies. Our proven approach delivers measurable ROI for professionals like you. See why industry leaders choose us."
+        Create a complete, deployment-ready ad copy for:
+        - Target: {age_range} year-olds in {location}  
+        - Interests: {interests_str}
+        - Platform: {platform.title()} ({platform_info['tone']})
+        - Keywords to incorporate: {keywords_str}
         
-        tiktok_copy = f"POV: You found the most {primary_keyword} solution ever 🔥 This changes everything! Try it and thank us later ✨ #GameChanger #MustTry"
+        REQUIREMENTS - Return structured response with these exact sections:
+        
+        HEADLINE: [Create a catchy, attention-grabbing title that incorporates main keyword]
+        
+        BODY: [Write a compelling 2-3 sentence paragraph that speaks directly to the target audience's pain points and desires]
+        
+        KEYWORDS: [Naturally integrate 3-4 trending keywords from the list into the copy]
+        
+        CTA: [Provide a clear, action-oriented call-to-action appropriate for {platform}]
+        
+        COLOR_PALETTE: [Recommend 3-4 hex color codes with brief psychology explanation]
+        
+        Platform Style: {platform_info['style']}
+        Tone: {platform_info['tone']}
+        
+        Make it professional, persuasive, and ready for immediate deployment.
+        """
+        
+        return prompt.strip()
+    
+    def _parse_ad_copy_response(self, response: str, platform: str, keywords: List[str]) -> Dict[str, Any]:
+        """Parse LLM response into structured ad copy format"""
+        
+        try:
+            # Extract sections from response
+            sections = {}
+            current_section = None
+            current_content = []
+            
+            for line in response.split('\n'):
+                line = line.strip()
+                if line.startswith('HEADLINE:'):
+                    if current_section:
+                        sections[current_section] = '\n'.join(current_content).strip()
+                    current_section = 'headline'
+                    current_content = [line.replace('HEADLINE:', '').strip()]
+                elif line.startswith('BODY:'):
+                    if current_section:
+                        sections[current_section] = '\n'.join(current_content).strip()
+                    current_section = 'body'
+                    current_content = [line.replace('BODY:', '').strip()]
+                elif line.startswith('KEYWORDS:'):
+                    if current_section:
+                        sections[current_section] = '\n'.join(current_content).strip()
+                    current_section = 'keywords'
+                    current_content = [line.replace('KEYWORDS:', '').strip()]
+                elif line.startswith('CTA:'):
+                    if current_section:
+                        sections[current_section] = '\n'.join(current_content).strip()
+                    current_section = 'cta'
+                    current_content = [line.replace('CTA:', '').strip()]
+                elif line.startswith('COLOR_PALETTE:'):
+                    if current_section:
+                        sections[current_section] = '\n'.join(current_content).strip()
+                    current_section = 'color_palette'
+                    current_content = [line.replace('COLOR_PALETTE:', '').strip()]
+                elif line and current_section:
+                    current_content.append(line)
+            
+            # Add the last section
+            if current_section and current_content:
+                sections[current_section] = '\n'.join(current_content).strip()
+            
+            return {
+                "headline": sections.get('headline', 'Transform Your Experience'),
+                "body": sections.get('body', 'Discover solutions designed for your needs.'),
+                "keywords": sections.get('keywords', ', '.join(keywords[:3])),
+                "cta": sections.get('cta', self.platform_templates[platform]['cta_options'][0]),
+                "color_palette": sections.get('color_palette', 'Professional blues and whites for trust and clarity')
+            }
+            
+        except Exception as e:
+            logger.error(f"Error parsing ad copy response: {e}")
+            return self._create_fallback_ad_copy(platform, keywords)
+    
+    def _create_fallback_ad_copy(self, platform: str, keywords: List[str]) -> Dict[str, Any]:
+        """Create fallback professional ad copy"""
+        
+        primary_keyword = keywords[0] if keywords else "innovative"
+        platform_info = self.platform_templates[platform]
         
         return {
-            "instagram": instagram_copy[:50],
-            "linkedin": linkedin_copy[:50], 
-            "tiktok": tiktok_copy[:50]
+            "headline": f"Transform Your Business with {primary_keyword.title()} Solutions",
+            "body": f"Join thousands who've discovered the power of {primary_keyword} technology. Our proven approach delivers results you can measure, with support every step of the way.",
+            "keywords": ", ".join(keywords[:4]) if keywords else "innovative, reliable, proven, effective",
+            "cta": platform_info['cta_options'][0],
+            "color_palette": "#2563EB, #1E40AF, #F8FAFC - Professional blues build trust while clean whites ensure readability and modern appeal"
         }
+    
+    async def _mock_professional_ad_generation(self, persona_analysis: Dict, news_insights: Dict, age_range: str, interests: List[str], location: str) -> Dict[str, Any]:
+        """Mock professional ad copy generation with complete structure"""
+        
+        # Extract key elements
+        keywords = persona_analysis.get("trending_keywords_analysis", {}).get("keywords", ["innovative", "quality", "efficient"])
+        primary_keyword = keywords[0] if keywords else "innovative"
+        primary_interest = interests[0] if interests else "technology"
+        
+        # Select appropriate color psychology based on interests and demographics
+        color_theme = "trust"
+        if any(interest.lower() in ["fitness", "health", "wellness"] for interest in interests):
+            color_theme = "energy"
+        elif any(interest.lower() in ["luxury", "premium", "exclusive"] for interest in interests):
+            color_theme = "luxury"
+        elif any(interest.lower() in ["tech", "innovation", "startup"] for interest in interests):
+            color_theme = "innovation"
+        elif age_range in ["18-24", "25-34"]:
+            color_theme = "energy"
+        
+        color_info = self.color_psychology[color_theme]
+        
+        # Generate platform-specific professional ad copy
+        results = {}
+        
+        # Instagram Ad Copy
+        results["instagram"] = {
+            "headline": f"Transform Your {primary_interest.title()} Journey with {primary_keyword.title()} Solutions",
+            "body": f"Ready to join the {location} community that's already discovered the power of {primary_keyword} {primary_interest}? Our proven approach helps {age_range}-year-olds achieve results faster than ever. See why thousands trust us with their success.",
+            "keywords": f"{primary_keyword}, {primary_interest}, proven, {age_range}, results",
+            "cta": "Shop Now",
+            "color_palette": f"{color_info['colors'][0]}, {color_info['colors'][1]}, #FFFFFF - {color_info['psychology']}"
+        }
+        
+        # LinkedIn Ad Copy  
+        results["linkedin"] = {
+            "headline": f"Drive {primary_interest.title()} Results with {primary_keyword.title()} Strategies",
+            "body": f"Industry leaders in {location} trust our {primary_keyword} solutions to deliver measurable ROI. Join {age_range}-year-old professionals who've transformed their {primary_interest} approach and achieved breakthrough results with our proven methodology.",
+            "keywords": f"ROI, {primary_keyword}, professional, proven, industry-leading",
+            "cta": "Request Demo",
+            "color_palette": f"{color_info['colors'][0]}, {color_info['colors'][2]}, #F8FAFC - {color_info['psychology']}"
+        }
+        
+        # TikTok Ad Copy
+        results["tiktok"] = {
+            "headline": f"POV: You Found the Most {primary_keyword.title()} {primary_interest.title()} Solution Ever",
+            "body": f"This {primary_keyword} {primary_interest} trick is changing everything for {age_range}-year-olds in {location}! ✨ Watch thousands of people transform their results with this game-changing approach. Your future self will thank you! 🔥",
+            "keywords": f"game-changer, {primary_keyword}, trending, viral, results",
+            "cta": "Try Now",
+            "color_palette": f"{color_info['colors'][1]}, {color_info['colors'][0]}, #FF6B6B - {color_info['psychology']}"
+        }
+        
+        return results
 
 class MarketingIntelligenceCore:
     """Main marketing intelligence orchestrator"""
