@@ -424,11 +424,41 @@ def generate_trending_words(persona: str, geographic_location: Optional[str] = N
             "economical", "smart investment", "maximum ROI", "cost-saving", "efficient pricing"
         ])
     
+    # Geographic trending words
+    if geographic_location:
+        location_lower = geographic_location.lower()
+        if any(region in location_lower for region in ['uk', 'london', 'britain']):
+            trending_words.extend(["bespoke", "heritage", "traditional", "quality-assured", "british-made", "established"])
+        elif any(region in location_lower for region in ['new york', 'nyc']):
+            trending_words.extend(["fast-paced", "cutting-edge", "metropolitan", "premium", "exclusive", "competitive"])
+        elif any(region in location_lower for region in ['california', 'bay area', 'silicon valley']):
+            trending_words.extend(["innovative", "disruptive", "sustainable", "forward-thinking", "conscious", "progressive"])
+        elif any(region in location_lower for region in ['germany', 'berlin']):
+            trending_words.extend(["engineered", "precision-built", "systematic", "reliable", "methodical", "quality-tested"])
+        elif any(region in location_lower for region in ['japan', 'tokyo']):
+            trending_words.extend(["refined", "meticulous", "harmonious", "respectful", "continuous-improvement", "quality-focused"])
+    
+    # Interest-based trending words
+    if interests:
+        interests_lower = interests.lower()
+        if 'sustainability' in interests_lower:
+            trending_words.extend(["eco-friendly", "carbon-neutral", "sustainable", "renewable", "responsible", "green"])
+        if 'fitness' in interests_lower:
+            trending_words.extend(["performance-driven", "goal-oriented", "energizing", "motivational", "strength-building", "wellness-focused"])
+        if 'technology' in interests_lower:
+            trending_words.extend(["AI-powered", "smart", "automated", "next-gen", "digital-first", "tech-enabled"])
+        if 'art' in interests_lower:
+            trending_words.extend(["creative", "expressive", "unique", "artistic", "inspirational", "aesthetic"])
+        if 'travel' in interests_lower:
+            trending_words.extend(["adventure-ready", "portable", "flexible", "global", "culturally-aware", "exploration-focused"])
+        if 'cooking' in interests_lower:
+            trending_words.extend(["artisanal", "crafted", "gourmet", "quality-ingredients", "flavorful", "culinary-inspired"])
+    
     # Remove duplicates and shuffle for variety
     trending_words = list(set(trending_words))
     random.shuffle(trending_words)
     
-    # Return 8-15 trending words
+    # Return 8-15 trending words, enhanced with geographic and interest context
     return trending_words[:12]
 
 
