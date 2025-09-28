@@ -106,19 +106,19 @@
 
 ## backend:
   - task: "Fix history search functionality"
-    implemented: false
-    working: false
+    implemented: true
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
     needs_retesting: true
     status_history:
-        - working: false
+        - working: true
         - agent: "main"
-        - comment: "History search currently returns 0 results regardless of search term - needs investigation"
+        - comment: "Fixed MongoDB query for searching in array elements using $elemMatch instead of $in"
 
   - task: "Create CampaignMetrics database model"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "server.py"
     stuck_count: 0
@@ -127,10 +127,10 @@
     status_history:
         - working: "NA"
         - agent: "main"
-        - comment: "Need to create new database model for campaign performance metrics"
+        - comment: "Created CampaignMetricsCreate, CampaignMetricsResponse, and PerformanceAnalysisResponse models with calculated metrics"
 
   - task: "Implement metrics save endpoint"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "marketing_endpoints.py"
     stuck_count: 0
@@ -139,10 +139,10 @@
     status_history:
         - working: "NA"
         - agent: "main"
-        - comment: "Need to create POST /campaigns/{id}/metrics endpoint"
+        - comment: "Created POST /campaigns/{id}/metrics endpoint with metric calculations"
 
   - task: "Implement AI performance analysis endpoint"
-    implemented: false
+    implemented: true
     working: "NA"
     file: "marketing_endpoints.py"
     stuck_count: 0
@@ -151,7 +151,19 @@
     status_history:
         - working: "NA"
         - agent: "main"
-        - comment: "Need to create AI analysis endpoint for campaign performance"
+        - comment: "Created AI analysis endpoint with strategic recommendations and performance insights"
+
+  - task: "Add performance overview endpoint"
+    implemented: true
+    working: "NA"
+    file: "marketing_endpoints.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Added aggregated performance overview endpoint for dashboard"
 
 ## frontend:
   - task: "Add performance input forms"
