@@ -29,7 +29,9 @@ import {
   Cpu,
   Layers,
   Check,
-  Settings
+  Settings,
+  LogOut,
+  Camera
 } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -39,6 +41,8 @@ import LocationAutosuggest from './LocationAutosuggest';
 import WordCloudVisualization from './visualizations/WordCloudVisualization';
 import BehavioralChart from './visualizations/BehavioralChart';
 import CategorizedNews from './visualizations/CategorizedNews';
+import CustomerPersonaTemplate from './CustomerPersonaTemplate';
+import AuthenticationMenu from './AuthenticationMenu';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
