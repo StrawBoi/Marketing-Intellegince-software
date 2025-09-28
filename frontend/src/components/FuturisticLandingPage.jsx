@@ -282,7 +282,7 @@ const FuturisticLandingPage = () => {
             </span>
           </div>
           <p className="text-slate-400">
-            © 2024 Marketing Intelligence Pro. Powered by Advanced AI Technology.
+            © 2024 Marketing Intelligence Pro. Professional Marketing Analytics Platform.
           </p>
         </div>
       </footer>
