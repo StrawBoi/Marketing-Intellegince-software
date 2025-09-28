@@ -32,10 +32,12 @@ const LandingPage = () => {
   ];
 
   const benefits = [
-    "Reduce campaign creation time by 90%",
-    "Increase engagement rates with personalized content", 
-    "Scale marketing efforts across multiple personas",
-    "Maintain brand consistency across all campaigns"
+    "Interactive dashboards with real-time visualizations",
+    "AI-powered behavioral analysis with chart visualizations", 
+    "Categorized news intelligence with smart filtering",
+    "Campaign history management with instant recreation",
+    "Dynamic word clouds showing keyword relevance",
+    "Multi-platform ad copy generation and optimization"
   ];
 
   return (
