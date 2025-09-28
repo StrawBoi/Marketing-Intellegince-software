@@ -516,12 +516,157 @@ def generate_trending_words(persona: str, geographic_location: Optional[str] = N
     return trending_words[:12]
 
 
-# Helper function for MongoDB serialization
+# Helper functions for MongoDB serialization and metrics calculation
 def prepare_for_mongo(data):
     """Convert datetime objects to ISO strings for MongoDB storage"""
     if isinstance(data.get('created_at'), datetime):
         data['created_at'] = data['created_at'].isoformat()
     return data
+
+def calculate_performance_metrics(clicks: int, conversions: int, spend: float) -> Dict[str, float]:
+    """Calculate key performance metrics"""
+    metrics = {
+        'conversion_rate': 0.0,
+        'cost_per_click': 0.0,
+        'cost_per_conversion': 0.0,
+        'roi': 0.0
+    }
+    
+    if clicks > 0:
+        metrics['conversion_rate'] = (conversions / clicks) * 100
+        metrics['cost_per_click'] = spend / clicks
+    
+    if conversions > 0:
+        metrics['cost_per_conversion'] = spend / conversions
+        # Assuming average conversion value of $100 for ROI calculation
+        # In real scenario, this would be configurable or provided by user
+        avg_conversion_value = 100.0
+        revenue = conversions * avg_conversion_value
+        metrics['roi'] = ((revenue - spend) / spend) * 100 if spend > 0 else 0
+    
+    return metrics
+
+def generate_strategic_analysis(metrics: Dict[str, float], clicks: int, conversions: int, spend: float) -> Dict[str, Any]:
+    """Generate AI-powered strategic analysis based on campaign performance"""
+    
+    # Performance categorization
+    conversion_rate = metrics['conversion_rate']
+    cost_per_click = metrics['cost_per_click']
+    roi = metrics['roi']
+    
+    # Performance assessment
+    performance_level = "Poor"
+    if conversion_rate > 5 and roi > 200:
+        performance_level = "Excellent"
+    elif conversion_rate > 3 and roi > 100:
+        performance_level = "Good"
+    elif conversion_rate > 1 and roi > 0:
+        performance_level = "Average"
+    elif conversion_rate > 0.5:
+        performance_level = "Below Average"
+    
+    # Strategic recommendations based on performance patterns
+    recommendations = []
+    improvement_areas = []
+    competitive_insights = []
+    next_steps = []
+    
+    # Conversion Rate Analysis
+    if conversion_rate < 1:
+        recommendations.append("🎯 **Low Conversion Rate Alert**: Your current conversion rate of {:.2f}% is below industry standards. Consider A/B testing your landing page, optimizing call-to-action buttons, and improving page load speed.".format(conversion_rate))
+        improvement_areas.append("Landing Page Optimization")
+        improvement_areas.append("Call-to-Action Enhancement")
+        next_steps.append("Conduct landing page audit and implement heat mapping analysis")
+        next_steps.append("Test different CTA colors, text, and placement")
+    elif conversion_rate < 3:
+        recommendations.append("📈 **Moderate Conversion Opportunity**: With a {:.2f}% conversion rate, you're performing reasonably but have room for improvement. Focus on audience targeting refinement and message-market fit optimization.".format(conversion_rate))
+        improvement_areas.append("Audience Targeting")
+        improvement_areas.append("Message Optimization")
+        next_steps.append("Analyze top-converting audience segments")
+        next_steps.append("Create personalized messaging for different customer personas")
+    else:
+        recommendations.append("✅ **Strong Conversion Performance**: Your {:.2f}% conversion rate indicates excellent campaign performance. Focus on scaling successful elements and expanding reach.".format(conversion_rate))
+        improvement_areas.append("Campaign Scaling")
+        next_steps.append("Increase budget allocation to high-performing campaigns")
+        next_steps.append("Expand to similar audience segments")
+    
+    # Cost Efficiency Analysis
+    if cost_per_click > 5:
+        recommendations.append("💰 **High CPC Concern**: Your cost-per-click of ${:.2f} is elevated. Consider improving Quality Score through ad relevance optimization, keyword refinement, and competitor analysis.".format(cost_per_click))
+        improvement_areas.append("Keyword Optimization")
+        improvement_areas.append("Ad Quality Score")
+        competitive_insights.append("Analyze competitor ad strategies to identify cost-reduction opportunities")
+        next_steps.append("Conduct keyword audit and remove low-performing terms")
+        next_steps.append("Improve ad relevance and landing page experience")
+    elif cost_per_click > 2:
+        recommendations.append("⚖️ **CPC Optimization Opportunity**: At ${:.2f} per click, there's room for cost efficiency improvements. Focus on long-tail keywords and improved ad scheduling.".format(cost_per_click))
+        improvement_areas.append("Bid Strategy Optimization")
+        next_steps.append("Implement automated bidding strategies")
+        next_steps.append("Optimize ad scheduling based on performance data")
+    else:
+        recommendations.append("💎 **Excellent Cost Efficiency**: Your ${:.2f} CPC demonstrates strong budget management. Maintain current strategies while exploring expansion opportunities.".format(cost_per_click))
+        competitive_insights.append("Your low CPC provides competitive advantage - leverage this for market expansion")
+    
+    # ROI Analysis
+    if roi < 0:
+        recommendations.append("🚨 **Negative ROI Critical Issue**: Current ROI of {:.1f}% requires immediate attention. Pause underperforming campaigns and focus budget on proven strategies.".format(roi))
+        improvement_areas.append("Campaign Restructuring")
+        improvement_areas.append("Budget Reallocation")
+        next_steps.append("Immediately pause campaigns with negative ROI")
+        next_steps.append("Conduct comprehensive campaign audit")
+    elif roi < 100:
+        recommendations.append("📊 **ROI Improvement Needed**: {:.1f}% ROI suggests campaigns are breaking even but not generating significant profit. Focus on conversion value optimization.".format(roi))
+        improvement_areas.append("Conversion Value Optimization")
+        next_steps.append("Implement enhanced conversion tracking")
+        next_steps.append("Focus on higher-value customer acquisition")
+    else:
+        recommendations.append("🎉 **Strong ROI Performance**: {:.1f}% ROI indicates profitable campaigns. Scale successful strategies and reinvest profits for growth.".format(roi))
+        competitive_insights.append("Strong ROI positions you ahead of competitors - capitalize on this advantage")
+        next_steps.append("Scale successful campaigns with increased budgets")
+        next_steps.append("Explore new channels with similar targeting strategies")
+    
+    # Traffic Volume Analysis
+    if clicks < 100:
+        recommendations.append("📡 **Low Traffic Volume**: With only {} clicks, consider expanding your reach through broader keyword targeting, increased budget allocation, or additional advertising channels.".format(clicks))
+        improvement_areas.append("Reach Expansion")
+        improvement_areas.append("Channel Diversification")
+        next_steps.append("Explore additional advertising platforms")
+        next_steps.append("Increase daily budget for successful campaigns")
+    elif clicks < 500:
+        recommendations.append("📈 **Moderate Traffic Growth**: {} clicks shows decent engagement. Focus on optimizing for quality traffic and improving conversion paths.".format(clicks))
+        improvement_areas.append("Traffic Quality Enhancement")
+        next_steps.append("Implement advanced audience targeting")
+        next_steps.append("Optimize conversion funnel")
+    else:
+        recommendations.append("🚀 **Strong Traffic Generation**: {} clicks demonstrates excellent reach. Focus on conversion optimization to maximize this traffic volume.".format(clicks))
+        next_steps.append("Implement advanced conversion tracking")
+        next_steps.append("Create retargeting campaigns for non-converters")
+    
+    # Industry Benchmarking
+    competitive_insights.extend([
+        "Industry average conversion rate ranges from 2-4% - compare your performance accordingly",
+        "Consider seasonal trends and competitor campaign timing for strategic advantage",
+        "Monitor competitor ad copy and landing pages for inspiration and differentiation opportunities"
+    ])
+    
+    # Performance summary
+    performance_summary = {
+        "overall_grade": performance_level,
+        "conversion_efficiency": "High" if conversion_rate > 3 else "Medium" if conversion_rate > 1 else "Low",
+        "cost_efficiency": "High" if cost_per_click < 2 else "Medium" if cost_per_click < 5 else "Low",
+        "profitability": "High" if roi > 200 else "Medium" if roi > 100 else "Low" if roi > 0 else "Negative",
+        "traffic_volume": "High" if clicks > 500 else "Medium" if clicks > 100 else "Low",
+        "priority_focus": improvement_areas[0] if improvement_areas else "Campaign Optimization"
+    }
+    
+    return {
+        "performance_summary": performance_summary,
+        "strategic_recommendations": recommendations,
+        "improvement_areas": improvement_areas,
+        "competitive_insights": competitive_insights,
+        "next_steps": next_steps,
+        "key_metrics": metrics
+    }
 
 def parse_from_mongo(item):
     """Parse datetime strings back from MongoDB"""
