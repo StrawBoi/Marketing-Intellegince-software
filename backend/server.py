@@ -47,6 +47,8 @@ class CampaignResponse(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     customer_persona: str
     product_description: str
+    geographic_location: Optional[str] = None
+    interests: Optional[str] = None
     generated_content: str
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     status: str = Field(default="generated")
