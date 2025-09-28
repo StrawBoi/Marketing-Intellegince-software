@@ -259,7 +259,7 @@ const FuturisticLandingPage = () => {
             </p>
             <Button 
               size="lg"
-              onClick={() => navigate('/intelligence')}
+              onClick={() => setShowAuth(true)}
               className="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:from-cyan-600 hover:via-purple-600 hover:to-pink-600 text-white font-semibold text-lg px-12 py-4 shadow-2xl hover:shadow-cyan-500/25 transform hover:scale-105 transition-all duration-300"
             >
               <Layers className="w-5 h-5 mr-3" />
