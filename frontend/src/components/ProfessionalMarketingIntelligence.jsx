@@ -66,6 +66,17 @@ const ProfessionalMarketingIntelligence = () => {
   
   // UI state
   const [activeTab, setActiveTab] = useState('insights');
+  
+  // Authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // For demo purposes
+  const [user, setUser] = useState({
+    name: 'Marketing Pro',
+    email: 'demo@marketingpro.com',
+    avatar: 'MP',
+    subscription: 'Professional',
+    campaigns: 24,
+    totalROI: 324.5
+  });
 
   useEffect(() => {
     loadCampaignHistory();
