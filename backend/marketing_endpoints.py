@@ -2,8 +2,17 @@ from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
 from typing import List, Dict, Any
 from pydantic import BaseModel, Field
 import logging
+import asyncio
 from datetime import datetime
 from marketing_intelligence import MarketingIntelligenceCore
+import sys
+import os
+
+# Add the backend directory to sys.path to import from server.py
+sys.path.append(os.path.dirname(__file__))
+
+# Import database and models from server.py
+from server import db, prepare_for_mongo
 
 router = APIRouter(prefix="/api/marketing", tags=["Marketing Intelligence"])
 logger = logging.getLogger(__name__)
