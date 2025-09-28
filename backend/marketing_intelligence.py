@@ -550,12 +550,10 @@ class NewsSearchService:
         }
     
     async def search_recent_news(self, location: str, interests: List[str], age_range: str) -> Dict[str, Any]:
-        """Search for recent news relevant to persona and location"""
+        """Search for recent news relevant to persona and location using RSS feeds"""
         
-        if api_config.use_real_apis and api_config.brave_api_key:
-            return await self._real_news_search(location, interests, age_range)
-        else:
-            return await self._mock_news_search(location, interests, age_range)
+        # Always use RSS feeds for recent, real news
+        return await self._rss_news_search(location, interests, age_range)
     
     async def _real_news_search(self, location: str, interests: List[str], age_range: str) -> Dict[str, Any]:
         """Real news search using Brave Search API"""
