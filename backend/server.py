@@ -77,7 +77,7 @@ class AnalysisResponse(BaseModel):
 
 
 # Advanced Analysis Logic Functions
-def analyze_persona_behavior(persona: str, product_description: str) -> str:
+def analyze_persona_behavior(persona: str, product_description: str, geographic_location: Optional[str] = None, interests: Optional[str] = None) -> str:
     """Generate behavioral analysis based on marketing psychology"""
     
     # Extract key demographic and psychographic indicators
