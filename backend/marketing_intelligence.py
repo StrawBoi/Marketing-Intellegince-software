@@ -744,6 +744,8 @@ class MarketingIntelligenceCore:
         self.news_service = NewsSearchService()
         self.image_service = ImageGenerationService()
         self.ad_generator = AdCopyGenerator()
+        self.word_cloud_processor = WordCloudProcessor()
+        self.behavioral_processor = BehavioralAnalysisProcessor()
     
     async def generate_complete_intelligence(self, age_range: str, geographic_location: str, interests: List[str]) -> Dict[str, Any]:
         """Generate complete marketing intelligence report"""
