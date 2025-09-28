@@ -149,11 +149,23 @@ const BehavioralChart = ({ behavioralData }) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="h-56">
-        <div className="h-full w-full flex items-center justify-center">
-          <div className="text-center text-slate-500">
-            <BarChart3 className="w-12 h-12 mx-auto mb-4 opacity-30" />
-            <p>Chart temporarily disabled</p>
-            <p className="text-sm">Chart.js integration being fixed</p>
+        <div className="h-full w-full p-4">
+          {/* Temporary bar chart replacement with styled bars */}
+          <div className="space-y-3">
+            {behavioralData.slice(0, 6).map((item, index) => (
+              <div key={index} className="space-y-1">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-medium text-slate-700">{item.label}</span>
+                  <span className="text-slate-600">{item.value}%</span>
+                </div>
+                <div className="w-full bg-slate-200 rounded-full h-2">
+                  <div 
+                    className="bg-gradient-to-r from-indigo-500 to-purple-600 h-2 rounded-full transition-all duration-1000 ease-out"
+                    style={{ width: `${item.value}%` }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </CardContent>
