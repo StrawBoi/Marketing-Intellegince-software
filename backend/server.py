@@ -479,14 +479,19 @@ async def generate_advanced_analysis(request: AnalysisRequest):
     try:
         logger.info(f"Generating advanced analysis for persona: {request.persona[:50]}...")
         
-        # Generate behavioral analysis
-        behavior_summary = analyze_persona_behavior(request.persona, request.product_description)
+        # Generate behavioral analysis with enhanced context
+        behavior_summary = analyze_persona_behavior(
+            request.persona, 
+            request.product_description, 
+            request.geographic_location, 
+            request.interests
+        )
         
-        # Generate color palette based on psychology
-        color_palette = generate_color_palette(request.persona)
+        # Generate color palette based on psychology with geographic and interest context
+        color_palette = generate_color_palette(request.persona, request.geographic_location, request.interests)
         
-        # Generate trending words
-        trending_words = generate_trending_words(request.persona)
+        # Generate trending words with enhanced context
+        trending_words = generate_trending_words(request.persona, request.geographic_location, request.interests)
         
         # Create response object
         analysis_response = AnalysisResponse(
