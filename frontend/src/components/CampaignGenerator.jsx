@@ -121,7 +121,7 @@ const CampaignGenerator = () => {
             </div>
           </div>
           <Badge variant="secondary" className="bg-blue-100 text-blue-700">
-            Phase 1 - Beta
+            Phase 2C - Enhanced
           </Badge>
         </nav>
       </header>
