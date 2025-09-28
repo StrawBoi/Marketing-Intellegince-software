@@ -1191,9 +1191,9 @@ class MarketingIntelligenceCore:
                 age_range, geographic_location, interests, trending_keywords
             )
             
-            # Step 4: Ad Copy Generation
-            ad_copy_variations = await self.ad_generator.generate_ad_copy(
-                persona_analysis, news_data, age_range, interests
+            # Step 4: Professional Ad Copy Generation
+            ad_copy_variations = await self.ad_generator.generate_professional_ad_copy(
+                persona_analysis, news_data, age_range, interests, geographic_location
             )
             
             # Step 5: Process data for advanced visualizations (Phase 3A)
