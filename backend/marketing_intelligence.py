@@ -730,13 +730,13 @@ class AdCopyGenerator:
             "warmth": {"colors": ["#F59E0B", "#FBBF24", "#F97316"], "psychology": "Warm oranges and yellows create friendly, approachable feelings and positive associations."}
         }
     
-    async def generate_ad_copy(self, persona_analysis: Dict, news_insights: Dict, age_range: str, interests: List[str]) -> Dict[str, str]:
-        """Generate platform-specific ad copy variations"""
+    async def generate_professional_ad_copy(self, persona_analysis: Dict, news_insights: Dict, age_range: str, interests: List[str], location: str) -> Dict[str, Any]:
+        """Generate complete, professional ad copy ready for deployment"""
         
         if api_config.use_real_apis and api_config.emergent_llm_key:
-            return await self._real_ad_generation(persona_analysis, news_insights, age_range, interests)
+            return await self._real_professional_ad_generation(persona_analysis, news_insights, age_range, interests, location)
         else:
-            return await self._mock_ad_generation(persona_analysis, news_insights, age_range, interests)
+            return await self._mock_professional_ad_generation(persona_analysis, news_insights, age_range, interests, location)
     
     async def _real_ad_generation(self, persona_analysis: Dict, news_insights: Dict, age_range: str, interests: List[str]) -> Dict[str, str]:
         """Real ad copy generation using Emergent LLM"""
