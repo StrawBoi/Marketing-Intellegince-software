@@ -3,45 +3,45 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
-import { ArrowRight, Target, Zap, BarChart3, Users, Sparkles, CheckCircle } from 'lucide-react';
+import { ArrowRight, Target, Zap, BarChart3, Users, Sparkles, CheckCircle, Brain, Cpu, Palette, Eye, TrendingUp, Star } from 'lucide-react';
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   const features = [
     {
-      icon: <Target className="w-6 h-6" />,
-      title: "Interactive Word Clouds", 
-      description: "Dynamic visualization of trending keywords with weighted importance and relevance scoring"
+      icon: <Brain className="w-8 h-8" />,
+      title: "AI-Powered Behavioral Analysis", 
+      description: "Deep psychological profiling with advanced AI algorithms that analyze customer behavior patterns and predict engagement responses"
     },
     {
-      icon: <Zap className="w-6 h-6" />,
-      title: "Behavioral Analytics Charts", 
-      description: "Visual representation of persona motivations and decision-making factors with interactive charts"
+      icon: <Palette className="w-8 h-8" />,
+      title: "Color Psychology Engine", 
+      description: "Scientific color recommendations based on persona psychology and demographic analysis for maximum emotional impact"
     },
     {
-      icon: <BarChart3 className="w-6 h-6" />,
-      title: "Categorized News Intelligence",
-      description: "AI-categorized news articles with filtering by Technology, Business, Fashion, Sports and more"
+      icon: <TrendingUp className="w-8 h-8" />,
+      title: "Strategic Performance Metrics",
+      description: "Comprehensive ROI analysis with AI-driven strategic recommendations and actionable performance insights"
     },
     {
-      icon: <Users className="w-6 h-6" />,
-      title: "Campaign History Dashboard",
-      description: "Comprehensive history panel with search, filtering, and one-click campaign recreation"
+      icon: <Eye className="w-8 h-8" />,
+      title: "Multi-Platform Campaign Intelligence",
+      description: "Generate optimized ad content for Instagram, LinkedIn, TikTok with platform-specific behavioral targeting"
     }
   ];
 
   const benefits = [
-    "Interactive dashboards with real-time visualizations",
-    "AI-powered behavioral analysis with chart visualizations", 
-    "Categorized news intelligence with smart filtering",
-    "Campaign history management with instant recreation",
-    "Dynamic word clouds showing keyword relevance",
-    "Multi-platform ad copy generation and optimization"
+    "Advanced AI behavioral profiling with psychological insights",
+    "Scientific color psychology for maximum engagement", 
+    "Strategic performance analysis with ROI optimization",
+    "Multi-platform ad generation with AI-powered targeting",
+    "Real-time market intelligence with trend analysis",
+    "Professional campaign management and monitoring tools"
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 text-white relative overflow-hidden">
       {/* Header */}
       <header className="container mx-auto px-6 py-6">
         <nav className="flex items-center justify-between">
