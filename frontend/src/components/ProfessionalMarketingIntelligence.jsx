@@ -184,6 +184,110 @@ const ProfessionalMarketingIntelligence = () => {
     }
   };
 
+  const renderAIIntelligence = () => {
+    return (
+      <div className="space-y-8">
+        {/* Generator Section */}
+        <Card className="shadow-xl border-0 bg-gradient-to-r from-slate-900 to-indigo-900 text-white">
+          <CardHeader>
+            <CardTitle className="text-2xl flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                <Brain className="w-6 h-6" />
+              </div>
+              AI-Powered Intelligence Generator
+              <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                <Sparkles className="w-3 h-3 mr-1" />
+                Advanced AI
+              </Badge>
+            </CardTitle>
+            <CardDescription className="text-white/80 text-lg">
+              Generate comprehensive marketing intelligence with behavioral analysis and strategic insights
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Age Range */}
+              <div className="space-y-3">
+                <Label htmlFor="ageRange" className="text-white font-semibold flex items-center text-base">
+                  <Users className="w-5 h-5 mr-2 text-blue-300" />
+                  Target Demographics
+                </Label>
+                <select
+                  id="ageRange"
+                  value={ageRange}
+                  onChange={(e) => setAgeRange(e.target.value)}
+                  className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 backdrop-blur-sm"
+                >
+                  <option value="" className="text-slate-900">Select target age range...</option>
+                  <option value="18-24" className="text-slate-900">18-24 (Gen Z Digital Natives)</option>
+                  <option value="25-34" className="text-slate-900">25-34 (Millennial Professionals)</option>
+                  <option value="35-44" className="text-slate-900">35-44 (Gen X Decision Makers)</option>
+                  <option value="45-54" className="text-slate-900">45-54 (Established Professionals)</option>
+                  <option value="55+" className="text-slate-900">55+ (Premium Market)</option>
+                </select>
+              </div>
+
+              {/* Geographic Location */}
+              <div className="space-y-3">
+                <Label className="text-white font-semibold flex items-center text-base">
+                  <Zap className="w-5 h-5 mr-2 text-green-300" />
+                  Geographic Market
+                  <Badge variant="secondary" className="ml-2 bg-green-400/20 text-green-300 border-green-400/30">
+                    AI-Enhanced
+                  </Badge>
+                </Label>
+                <LocationAutosuggest
+                  value={geographicLocation}
+                  onChange={(e) => setGeographicLocation(e.target.value)}
+                  className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:ring-2 focus:ring-green-400 focus:border-green-400 backdrop-blur-sm"
+                />
+              </div>
+
+              {/* Interests */}
+              <div className="space-y-3">
+                <Label htmlFor="interests" className="text-white font-semibold flex items-center text-base">
+                  <Heart className="w-5 h-5 mr-2 text-pink-300" />
+                  Interest Profile
+                </Label>
+                <input
+                  id="interests"
+                  placeholder="e.g., AI technology, business growth, wellness trends"
+                  value={interests}
+                  onChange={(e) => setInterests(e.target.value)}
+                  className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:ring-2 focus:ring-pink-400 focus:border-pink-400 backdrop-blur-sm"
+                />
+              </div>
+            </div>
+
+            {/* Generate Button */}
+            <div className="flex justify-center pt-4">
+              <Button
+                onClick={handleGenerateIntelligence}
+                disabled={isGenerating}
+                className="px-12 py-6 text-lg font-semibold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white shadow-2xl rounded-xl transform hover:scale-105 transition-all duration-200"
+              >
+                {isGenerating ? (
+                  <>
+                    <RefreshCw className="w-6 h-6 mr-3 animate-spin" />
+                    Generating AI Intelligence...
+                  </>
+                ) : (
+                  <>
+                    <Brain className="w-6 h-6 mr-3" />
+                    Generate AI Intelligence
+                  </>
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Results Section */}
+        {intelligenceData && renderPersonaInsights()}
+      </div>
+    );
+  };
+
   const renderPersonaInsights = () => {
     if (!intelligenceData) return null;
 
