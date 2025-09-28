@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import CampaignGenerator from "./components/CampaignGenerator";
-import EnhancedMarketingIntelligence from "./components/EnhancedMarketingIntelligence";
+import IntegratedMarketingIntelligence from "./components/IntegratedMarketingIntelligence";
 import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/generator" element={<CampaignGenerator />} />
-          <Route path="/intelligence" element={<EnhancedMarketingIntelligence />} />
+          <Route path="/intelligence" element={<IntegratedMarketingIntelligence />} />
         </Routes>
         <Toaster />
       </BrowserRouter>
