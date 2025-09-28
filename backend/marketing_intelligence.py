@@ -504,11 +504,14 @@ class NewsSearchService:
         if not relevant_news:
             relevant_news = self.mock_news_data["general"]
         
+        # Categorize news articles
+        categorized_news = self.categorization_service.process_news_articles(relevant_news[:5])
+        
         # Generate actionable insights
         insights = self._generate_marketing_insights(relevant_news, location, interests, age_range)
         
         return {
-            "news_results": relevant_news[:5],  # Limit to 5 most relevant
+            "news_results": categorized_news,  # Now includes categorization
             "insights": insights
         }
     
