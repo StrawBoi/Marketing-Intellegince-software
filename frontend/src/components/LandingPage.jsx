@@ -11,23 +11,23 @@ const LandingPage = () => {
   const features = [
     {
       icon: <Target className="w-6 h-6" />,
-      title: "AI Marketing Intelligence", 
-      description: "Advanced persona analysis with behavioral insights and trending keywords"
+      title: "Interactive Word Clouds", 
+      description: "Dynamic visualization of trending keywords with weighted importance and relevance scoring"
     },
     {
       icon: <Zap className="w-6 h-6" />,
-      title: "Real-Time News Analysis", 
-      description: "Leverage current events and market trends for timely campaign strategies"
+      title: "Behavioral Analytics Charts", 
+      description: "Visual representation of persona motivations and decision-making factors with interactive charts"
     },
     {
       icon: <BarChart3 className="w-6 h-6" />,
-      title: "Visual Persona Generation",
-      description: "AI-generated persona images and multi-platform ad copy variations"
+      title: "Categorized News Intelligence",
+      description: "AI-categorized news articles with filtering by Technology, Business, Fashion, Sports and more"
     },
     {
       icon: <Users className="w-6 h-6" />,
-      title: "Campaign Personalization",
-      description: "Create highly targeted campaigns with geographic and demographic targeting"
+      title: "Campaign History Dashboard",
+      description: "Comprehensive history panel with search, filtering, and one-click campaign recreation"
     }
   ];
 
