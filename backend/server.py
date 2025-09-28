@@ -682,7 +682,7 @@ async def get_campaign_history(page: int = 1, limit: int = 10, search: Optional[
                     {"title": {"$regex": search, "$options": "i"}},
                     {"age_range": {"$regex": search, "$options": "i"}},
                     {"geographic_location": {"$regex": search, "$options": "i"}},
-                    {"interests": {"$in": [{"$regex": search, "$options": "i"}]}}
+                    {"interests": {"$elemMatch": {"$regex": search, "$options": "i"}}}
                 ]
             }
         
