@@ -468,12 +468,53 @@ const EnhancedMarketingIntelligence = () => {
                 </div>
 
                 {/* Visualization Grid */}
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                   {/* Word Cloud */}
                   <WordCloudVisualization wordCloudData={intelligenceData.word_cloud_data} />
                   
                   {/* Behavioral Chart */}
                   <BehavioralChart behavioralData={intelligenceData.behavioral_analysis_chart} />
+                  
+                  {/* Persona Image */}
+                  <Card className="h-80">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <ImageIcon className="w-5 h-5 text-green-600" />
+                        AI-Generated Persona
+                      </CardTitle>
+                      <CardDescription>
+                        Visual representation of your target persona
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="h-56 flex items-center justify-center">
+                      {intelligenceData.persona_image_url ? (
+                        <div className="text-center">
+                          <img 
+                            src={intelligenceData.persona_image_url} 
+                            alt="Generated Persona" 
+                            className="rounded-lg max-w-full max-h-40 mx-auto border border-slate-200 shadow-sm"
+                            data-testid="persona-image"
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.nextElementSibling.style.display = 'block';
+                            }}
+                          />
+                          <div className="hidden">
+                            <ImageIcon className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+                            <p className="text-sm text-slate-500">Persona representation</p>
+                            <p className="text-xs text-slate-400 mt-2">
+                              {ageRange} • {geographicLocation}
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <ImageIcon className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+                          <p className="text-sm text-slate-500">Generating persona image...</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
                 </div>
 
                 {/* News Section */}
