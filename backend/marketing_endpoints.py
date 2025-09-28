@@ -21,6 +21,10 @@ class MarketingIntelligenceResponse(BaseModel):
     news_insights: Dict[str, Any] 
     persona_image_url: str
     ad_copy_variations: Dict[str, str]
+    # Phase 3A: New visualization data
+    word_cloud_data: List[Dict[str, Any]]
+    behavioral_analysis_chart: List[Dict[str, Any]]
+    demographic_breakdown: Dict[str, Any]
     metadata: Dict[str, Any]
 
 @router.post("/generate-intelligence", response_model=MarketingIntelligenceResponse)
