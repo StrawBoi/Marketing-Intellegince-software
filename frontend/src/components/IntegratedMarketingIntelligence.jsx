@@ -253,6 +253,78 @@ const IntegratedMarketingIntelligence = () => {
     return date.toLocaleDateString();
   };
 
+  // Phase 6: Performance Tracking functions
+  const openPerformanceModal = (campaign) => {
+    setSelectedCampaignForMetrics(campaign);
+    setShowPerformanceModal(true);
+    setPerformanceMetrics({
+      clicks: '',
+      conversions: '',
+      spend: '',
+      date_recorded: new Date().toISOString().split('T')[0]
+    });
+  };
+
+  const closePerformanceModal = () => {
+    setShowPerformanceModal(false);
+    setSelectedCampaignForMetrics(null);
+    setPerformanceAnalysis(null);
+    setShowPerformanceAnalysis(false);
+  };
+
+  const handleSubmitMetrics = async () => {
+    if (!selectedCampaignForMetrics || !performanceMetrics.clicks || !performanceMetrics.conversions || !performanceMetrics.spend) {
+      toast.error('Please fill in all performance metrics fields');
+      return;
+    }
+
+    setIsSubmittingMetrics(true);
+
+    try {
+      const metricsData = {
+        campaign_id: selectedCampaignForMetrics.id,
+        clicks: parseInt(performanceMetrics.clicks),
+        conversions: parseInt(performanceMetrics.conversions),
+        spend: parseFloat(performanceMetrics.spend),
+        date_recorded: performanceMetrics.date_recorded
+      };
+
+      await axios.post(`${API}/marketing/campaigns/${selectedCampaignForMetrics.id}/metrics`, metricsData);
+      
+      toast.success('Performance metrics saved successfully!');
+      
+      // Automatically generate analysis
+      handleGenerateAnalysis();
+      
+    } catch (error) {
+      console.error('Error submitting performance metrics:', error);
+      toast.error('Failed to save performance metrics. Please try again.');
+      setIsSubmittingMetrics(false);
+    }
+  };
+
+  const handleGenerateAnalysis = async () => {
+    if (!selectedCampaignForMetrics) return;
+
+    setIsAnalyzing(true);
+
+    try {
+      const response = await axios.post(`${API}/marketing/campaigns/${selectedCampaignForMetrics.id}/analyze-performance`);
+      setPerformanceAnalysis(response.data);
+      setShowPerformanceAnalysis(true);
+      setIsSubmittingMetrics(false);
+      
+      toast.success('Strategic analysis generated successfully!');
+      
+    } catch (error) {
+      console.error('Error generating performance analysis:', error);
+      toast.error('Failed to generate performance analysis. Please try again.');
+      setIsSubmittingMetrics(false);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Header */}
