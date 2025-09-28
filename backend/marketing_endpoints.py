@@ -218,3 +218,171 @@ async def log_intelligence_request(age_range: str, location: str, interests: Lis
         f"Age: {age_range}, Location: {location}, "
         f"Interests: {len(interests)}, News Articles: {news_count}"
     )
+
+# Phase 6: Campaign Performance Endpoints
+from server import (
+    CampaignMetricsCreate, CampaignMetricsResponse, PerformanceAnalysisResponse,
+    calculate_performance_metrics, generate_strategic_analysis
+)
+
+@router.post("/campaigns/{campaign_id}/metrics", response_model=CampaignMetricsResponse)
+async def save_campaign_metrics(campaign_id: str, metrics_data: CampaignMetricsCreate):
+    """Save performance metrics for a specific campaign"""
+    try:
+        # Calculate performance metrics
+        calculated_metrics = calculate_performance_metrics(
+            metrics_data.clicks,
+            metrics_data.conversions,
+            metrics_data.spend
+        )
+        
+        # Create metrics entry
+        metrics_entry = CampaignMetricsResponse(
+            campaign_id=campaign_id,
+            clicks=metrics_data.clicks,
+            conversions=metrics_data.conversions,
+            spend=metrics_data.spend,
+            date_recorded=metrics_data.date_recorded,
+            **calculated_metrics
+        )
+        
+        # Store in database
+        metrics_dict = metrics_entry.dict()
+        metrics_dict = prepare_for_mongo(metrics_dict)
+        await db.campaign_metrics.insert_one(metrics_dict)
+        
+        logger.info(f"Campaign metrics saved for campaign {campaign_id}")
+        return metrics_entry
+        
+    except Exception as e:
+        logger.error(f"Failed to save campaign metrics: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to save campaign metrics")
+
+@router.get("/campaigns/{campaign_id}/metrics", response_model=List[CampaignMetricsResponse])
+async def get_campaign_metrics(campaign_id: str):
+    """Get all performance metrics for a specific campaign"""
+    try:
+        metrics = await db.campaign_metrics.find({"campaign_id": campaign_id}).sort("date_recorded", -1).to_list(100)
+        
+        # Parse datetime fields
+        parsed_metrics = []
+        for metric in metrics:
+            if isinstance(metric.get('created_at'), str):
+                metric['created_at'] = datetime.fromisoformat(metric['created_at'])
+            parsed_metrics.append(CampaignMetricsResponse(**metric))
+        
+        return parsed_metrics
+        
+    except Exception as e:
+        logger.error(f"Failed to fetch campaign metrics: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch campaign metrics")
+
+@router.post("/campaigns/{campaign_id}/analyze-performance", response_model=PerformanceAnalysisResponse)
+async def analyze_campaign_performance(campaign_id: str):
+    """Generate AI-powered strategic analysis of campaign performance"""
+    try:
+        # Get latest metrics for the campaign
+        latest_metrics = await db.campaign_metrics.find({"campaign_id": campaign_id}).sort("date_recorded", -1).limit(1).to_list(1)
+        
+        if not latest_metrics:
+            raise HTTPException(status_code=404, detail="No performance metrics found for this campaign")
+        
+        metrics_data = latest_metrics[0]
+        
+        # Calculate performance metrics if not already calculated
+        calculated_metrics = calculate_performance_metrics(
+            metrics_data['clicks'],
+            metrics_data['conversions'],
+            metrics_data['spend']
+        )
+        
+        # Generate strategic analysis
+        analysis = generate_strategic_analysis(
+            calculated_metrics,
+            metrics_data['clicks'],
+            metrics_data['conversions'],
+            metrics_data['spend']
+        )
+        
+        # Create response
+        performance_analysis = PerformanceAnalysisResponse(
+            campaign_id=campaign_id,
+            performance_summary=analysis['performance_summary'],
+            strategic_recommendations=analysis['strategic_recommendations'],
+            key_metrics=analysis['key_metrics'],
+            improvement_areas=analysis['improvement_areas'],
+            competitive_insights=analysis['competitive_insights'],
+            next_steps=analysis['next_steps']
+        )
+        
+        logger.info(f"Performance analysis generated for campaign {campaign_id}")
+        return performance_analysis
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to analyze campaign performance: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to analyze campaign performance")
+
+@router.get("/performance/overview")
+async def get_performance_overview():
+    """Get overview of all campaign performance metrics"""
+    try:
+        # Aggregate metrics across all campaigns
+        pipeline = [
+            {
+                "$group": {
+                    "_id": None,
+                    "total_campaigns": {"$sum": 1},
+                    "total_clicks": {"$sum": "$clicks"},
+                    "total_conversions": {"$sum": "$conversions"},
+                    "total_spend": {"$sum": "$spend"},
+                    "avg_conversion_rate": {"$avg": "$conversion_rate"},
+                    "avg_cost_per_click": {"$avg": "$cost_per_click"},
+                    "avg_roi": {"$avg": "$roi"}
+                }
+            }
+        ]
+        
+        result = await db.campaign_metrics.aggregate(pipeline).to_list(1)
+        
+        if result:
+            overview = result[0]
+            overview.pop('_id', None)  # Remove MongoDB _id field
+        else:
+            overview = {
+                "total_campaigns": 0,
+                "total_clicks": 0,
+                "total_conversions": 0,
+                "total_spend": 0.0,
+                "avg_conversion_rate": 0.0,
+                "avg_cost_per_click": 0.0,
+                "avg_roi": 0.0
+            }
+        
+        # Get top performing campaigns
+        top_campaigns = await db.campaign_metrics.find().sort("roi", -1).limit(5).to_list(5)
+        
+        return {
+            "overview": overview,
+            "top_performing_campaigns": [
+                {
+                    "campaign_id": campaign["campaign_id"],
+                    "roi": campaign.get("roi", 0),
+                    "conversion_rate": campaign.get("conversion_rate", 0),
+                    "clicks": campaign.get("clicks", 0),
+                    "conversions": campaign.get("conversions", 0)
+                }
+                for campaign in top_campaigns
+            ],
+            "industry_benchmarks": {
+                "avg_conversion_rate": 2.5,
+                "avg_cost_per_click": 3.0,
+                "good_roi_threshold": 200,
+                "excellent_roi_threshold": 400
+            }
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to get performance overview: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to get performance overview")
