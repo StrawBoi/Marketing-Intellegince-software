@@ -54,6 +54,301 @@ class CampaignCreate(BaseModel):
     product_description: str
     generated_content: str
 
+# New models for Phase 2A - Advanced Analysis
+class AnalysisRequest(BaseModel):
+    persona: str = Field(..., description="Customer persona for behavioral analysis")
+    product_description: str = Field(..., description="Product or service description")
+
+class ColorInfo(BaseModel):
+    hex_code: str = Field(..., description="Hex color code")
+    color_name: str = Field(..., description="Name of the color")
+    psychological_effect: str = Field(..., description="Psychological effect of the color")
+
+class AnalysisResponse(BaseModel):
+    behavior_analysis_summary: str = Field(..., description="Behavioral analysis summary")
+    color_palette: List[ColorInfo] = Field(..., description="Color palette based on psychology")
+    trending_words: List[str] = Field(..., description="Trending words for the persona")
+
+
+# Advanced Analysis Logic Functions
+def analyze_persona_behavior(persona: str, product_description: str) -> str:
+    """Generate behavioral analysis based on marketing psychology"""
+    
+    # Extract key demographic and psychographic indicators
+    persona_lower = persona.lower()
+    
+    # Age group analysis
+    age_indicators = {
+        'gen z': "Highly digital-native, values authenticity and social responsibility, prefers visual content over text, influenced by peer recommendations and social proof.",
+        'millennials': "Tech-savvy but values work-life balance, prefers experiences over possessions, responsive to personalized content, values transparency and brand authenticity.",
+        'gen x': "Pragmatic decision-makers, values quality and reliability, responds to direct benefits and ROI, prefers detailed information before purchasing.",
+        'baby boomers': "Values traditional customer service, prefers phone/email communication, motivated by security and stability, appreciates loyalty programs.",
+        'teenagers': "Highly influenced by social media trends, values peer approval, prefers mobile-first experiences, responds to gamification and instant gratification.",
+        'young adults': "Career-focused, budget-conscious, values convenience and efficiency, influenced by online reviews and social proof."
+    }
+    
+    # Professional/lifestyle analysis
+    lifestyle_indicators = {
+        'startup': "Risk-tolerant, values innovation and efficiency, prefers scalable solutions, motivated by growth potential and competitive advantage.",
+        'small business': "Cost-conscious, values practical solutions, prefers proven results, needs easy implementation and reliable support.",
+        'corporate': "Process-oriented, values compliance and security, prefers established vendors, motivated by ROI and risk mitigation.",
+        'entrepreneur': "Self-motivated, values flexibility and control, prefers customizable solutions, motivated by productivity gains.",
+        'freelancer': "Budget-sensitive, values time-saving tools, prefers simple interfaces, motivated by efficiency and client satisfaction.",
+        'professional': "Career-focused, values reputation and results, prefers high-quality solutions, motivated by professional advancement."
+    }
+    
+    # Technology adoption patterns
+    tech_indicators = {
+        'tech-savvy': "Early adopters, comfortable with complex features, values innovation and cutting-edge solutions, prefers self-service options.",
+        'tech-hesitant': "Prefers simple, intuitive interfaces, values human support, needs clear instructions, motivated by proven reliability.",
+        'mobile-first': "Expects seamless mobile experience, values speed and convenience, prefers app-based solutions, motivated by accessibility.",
+        'digital native': "Expects instant results, values integration capabilities, prefers cloud-based solutions, motivated by efficiency gains."
+    }
+    
+    # Build comprehensive analysis
+    analysis_parts = []
+    
+    # Demographic analysis
+    for age_group, behavior in age_indicators.items():
+        if any(term in persona_lower for term in age_group.split()):
+            analysis_parts.append(f"**Age Demographics**: {behavior}")
+            break
+    
+    # Professional context analysis  
+    for lifestyle, behavior in lifestyle_indicators.items():
+        if lifestyle in persona_lower:
+            analysis_parts.append(f"**Professional Context**: {behavior}")
+            break
+    
+    # Technology adoption analysis
+    for tech_level, behavior in tech_indicators.items():
+        if tech_level.replace('-', ' ') in persona_lower or tech_level.replace('-', '') in persona_lower:
+            analysis_parts.append(f"**Technology Adoption**: {behavior}")
+            break
+    
+    # Product-specific behavioral predictions
+    product_lower = product_description.lower()
+    if any(term in product_lower for term in ['saas', 'software', 'app', 'platform', 'tool']):
+        analysis_parts.append("**Product Engagement**: Likely to evaluate through free trials, values feature demonstrations, influenced by case studies and user testimonials, expects seamless onboarding experience.")
+    elif any(term in product_lower for term in ['service', 'consulting', 'support']):
+        analysis_parts.append("**Service Engagement**: Values personal relationships, influenced by credentials and testimonials, prefers consultation-based sales approach, motivated by problem-solving capabilities.")
+    elif any(term in product_lower for term in ['product', 'physical', 'retail']):
+        analysis_parts.append("**Product Engagement**: Influenced by reviews and ratings, values quality guarantees, prefers detailed product information, motivated by value proposition and convenience.")
+    
+    # Decision-making patterns
+    if any(term in persona_lower for term in ['busy', 'time-constrained', 'efficient']):
+        analysis_parts.append("**Decision Pattern**: Quick decision-maker when value is clear, prefers concise information, values time-saving benefits, responsive to limited-time offers.")
+    elif any(term in persona_lower for term in ['careful', 'thorough', 'research']):
+        analysis_parts.append("**Decision Pattern**: Thorough researcher, compares multiple options, values detailed information, influenced by expert opinions and comprehensive reviews.")
+    
+    # Pain points and motivations
+    motivation_analysis = "**Core Motivations**: "
+    if any(term in persona_lower for term in ['growth', 'scale', 'expand']):
+        motivation_analysis += "Driven by growth opportunities and scalability. "
+    if any(term in persona_lower for term in ['cost', 'budget', 'affordable']):
+        motivation_analysis += "Cost-conscious, seeks value for money. "
+    if any(term in persona_lower for term in ['quality', 'premium', 'reliable']):
+        motivation_analysis += "Quality-focused, willing to pay for excellence. "
+    if any(term in persona_lower for term in ['innovation', 'cutting-edge', 'latest']):
+        motivation_analysis += "Innovation-driven, values newest technologies. "
+    
+    analysis_parts.append(motivation_analysis)
+    
+    # Combine all analysis parts
+    if analysis_parts:
+        return "\n\n".join(analysis_parts)
+    else:
+        # Fallback generic analysis
+        return """**General Analysis**: This persona likely values practical solutions that address specific needs. They respond well to clear value propositions, social proof through testimonials, and transparent communication. Decision-making is influenced by perceived benefits, ease of implementation, and alignment with personal or professional goals. They prefer authentic, straightforward messaging over overly promotional content."""
+
+def generate_color_palette(persona: str) -> List[ColorInfo]:
+    """Generate color palette based on color psychology and persona characteristics"""
+    
+    persona_lower = persona.lower()
+    colors = []
+    
+    # Age-based color preferences
+    if any(term in persona_lower for term in ['gen z', 'teenager', 'young']):
+        colors.extend([
+            ColorInfo(hex_code="#FF6B6B", color_name="Coral Red", psychological_effect="Energetic and youthful, creates excitement and captures attention of younger demographics"),
+            ColorInfo(hex_code="#4ECDC4", color_name="Turquoise", psychological_effect="Fresh and modern, appeals to creative and tech-savvy individuals"),
+            ColorInfo(hex_code="#45B7D1", color_name="Sky Blue", psychological_effect="Trustworthy yet vibrant, balances reliability with innovation"),
+            ColorInfo(hex_code="#96CEB4", color_name="Mint Green", psychological_effect="Calming and optimistic, suggests growth and positive change")
+        ])
+    
+    elif any(term in persona_lower for term in ['millennials', 'millennial']):
+        colors.extend([
+            ColorInfo(hex_code="#3498DB", color_name="Professional Blue", psychological_effect="Trustworthy and competent, appeals to career-focused individuals"),
+            ColorInfo(hex_code="#E74C3C", color_name="Confident Red", psychological_effect="Bold and decisive, motivates action and conveys confidence"),
+            ColorInfo(hex_code="#2ECC71", color_name="Success Green", psychological_effect="Growth-oriented and sustainable, represents achievement and progress"),
+            ColorInfo(hex_code="#F39C12", color_name="Optimistic Orange", psychological_effect="Enthusiastic and innovative, encourages exploration and creativity")
+        ])
+    
+    elif any(term in persona_lower for term in ['gen x', 'professional', 'executive']):
+        colors.extend([
+            ColorInfo(hex_code="#2C3E50", color_name="Executive Navy", psychological_effect="Authoritative and sophisticated, conveys professionalism and stability"),
+            ColorInfo(hex_code="#34495E", color_name="Steel Gray", psychological_effect="Reliable and practical, appeals to logical decision-makers"),
+            ColorInfo(hex_code="#27AE60", color_name="Corporate Green", psychological_effect="Balanced and trustworthy, suggests financial success and growth"),
+            ColorInfo(hex_code="#D35400", color_name="Amber", psychological_effect="Warm yet professional, encourages engagement while maintaining credibility")
+        ])
+    
+    elif any(term in persona_lower for term in ['baby boomers', 'senior', 'mature']):
+        colors.extend([
+            ColorInfo(hex_code="#1B4F72", color_name="Traditional Blue", psychological_effect="Trustworthy and established, appeals to traditional values and stability"),
+            ColorInfo(hex_code="#943126", color_name="Heritage Red", psychological_effect="Classic and reliable, evokes quality and time-tested value"),
+            ColorInfo(hex_code="#0E6B0E", color_name="Forest Green", psychological_effect="Stable and enduring, represents security and long-term value"),
+            ColorInfo(hex_code="#7D6608", color_name="Gold", psychological_effect="Premium and valuable, suggests exclusivity and worth")
+        ])
+    
+    # Industry-specific color additions
+    if any(term in persona_lower for term in ['tech', 'startup', 'innovation']):
+        if len(colors) < 5:
+            colors.append(ColorInfo(hex_code="#9B59B6", color_name="Innovation Purple", psychological_effect="Creative and forward-thinking, appeals to tech innovators"))
+    
+    elif any(term in persona_lower for term in ['healthcare', 'medical', 'wellness']):
+        if len(colors) < 5:
+            colors.append(ColorInfo(hex_code="#16A085", color_name="Medical Teal", psychological_effect="Healing and trustworthy, creates sense of care and professionalism"))
+    
+    elif any(term in persona_lower for term in ['finance', 'banking', 'investment']):
+        if len(colors) < 5:
+            colors.append(ColorInfo(hex_code="#1565C0", color_name="Financial Blue", psychological_effect="Secure and dependable, builds confidence in financial decisions"))
+    
+    elif any(term in persona_lower for term in ['creative', 'design', 'art']):
+        if len(colors) < 5:
+            colors.append(ColorInfo(hex_code="#FF5722", color_name="Creative Orange", psychological_effect="Inspiring and energetic, stimulates creativity and artistic expression"))
+    
+    # Personality-based colors
+    if any(term in persona_lower for term in ['luxury', 'premium', 'high-end']):
+        if len(colors) < 5:
+            colors.append(ColorInfo(hex_code="#000000", color_name="Luxury Black", psychological_effect="Sophisticated and exclusive, conveys premium quality and elegance"))
+    
+    elif any(term in persona_lower for term in ['eco', 'sustainable', 'green', 'environmental']):
+        if len(colors) < 5:
+            colors.append(ColorInfo(hex_code="#4CAF50", color_name="Earth Green", psychological_effect="Natural and sustainable, appeals to environmentally conscious consumers"))
+    
+    # Ensure we have at least 3-4 colors, add defaults if needed
+    if len(colors) < 3:
+        colors.extend([
+            ColorInfo(hex_code="#2196F3", color_name="Trust Blue", psychological_effect="Universal trust and reliability, safe choice for broad appeal"),
+            ColorInfo(hex_code="#4CAF50", color_name="Growth Green", psychological_effect="Positive and progressive, suggests improvement and success"),
+            ColorInfo(hex_code="#FF9800", color_name="Attention Orange", psychological_effect="Friendly and approachable, encourages interaction and engagement")
+        ])
+    
+    # Return 3-5 colors maximum
+    return colors[:5]
+
+def generate_trending_words(persona: str) -> List[str]:
+    """Generate trending words and phrases relevant to the persona"""
+    
+    persona_lower = persona.lower()
+    trending_words = []
+    
+    # Age group specific trending words
+    if any(term in persona_lower for term in ['gen z', 'teenager']):
+        trending_words.extend([
+            "authentic", "viral", "sustainable", "inclusive", "accessible", "instant", 
+            "personalized", "interactive", "gamified", "social", "visual", "mobile-native",
+            "eco-friendly", "diverse", "transparent", "relatable", "engaging"
+        ])
+    
+    elif any(term in persona_lower for term in ['millennials', 'millennial']):
+        trending_words.extend([
+            "experience-driven", "purpose-built", "work-life balance", "sustainable", 
+            "personalized", "data-driven", "seamless", "intuitive", "collaborative",
+            "flexible", "innovative", "transparent", "authentic", "efficient", "scalable"
+        ])
+    
+    elif any(term in persona_lower for term in ['gen x', 'professional']):
+        trending_words.extend([
+            "results-driven", "proven", "reliable", "efficient", "streamlined", 
+            "professional-grade", "enterprise-ready", "secure", "compliant", "robust",
+            "time-saving", "cost-effective", "strategic", "comprehensive", "established"
+        ])
+    
+    elif any(term in persona_lower for term in ['baby boomers', 'senior']):
+        trending_words.extend([
+            "trusted", "established", "reliable", "straightforward", "quality", 
+            "service-oriented", "personal", "secure", "time-tested", "dependable",
+            "comprehensive", "supportive", "clear", "proven", "valuable"
+        ])
+    
+    # Tech adoption level words
+    if any(term in persona_lower for term in ['tech-savvy', 'digital native']):
+        trending_words.extend([
+            "AI-powered", "cloud-based", "automated", "integrated", "smart", 
+            "next-generation", "cutting-edge", "advanced", "intelligent", "connected"
+        ])
+    
+    elif any(term in persona_lower for term in ['tech-hesitant']):
+        trending_words.extend([
+            "simple", "user-friendly", "guided", "supported", "straightforward", 
+            "easy-to-use", "intuitive", "clear", "step-by-step", "helpful"
+        ])
+    
+    # Professional context words
+    if any(term in persona_lower for term in ['startup', 'entrepreneur']):
+        trending_words.extend([
+            "disruptive", "agile", "scalable", "lean", "growth-focused", "innovative", 
+            "MVP", "rapid", "flexible", "bootstrapped", "pivot-ready", "competitive advantage"
+        ])
+    
+    elif any(term in persona_lower for term in ['small business', 'SMB']):
+        trending_words.extend([
+            "affordable", "practical", "ROI-focused", "easy-to-implement", "local", 
+            "community-driven", "family-owned", "personalized service", "cost-effective", "reliable"
+        ])
+    
+    elif any(term in persona_lower for term in ['corporate', 'enterprise']):
+        trending_words.extend([
+            "enterprise-grade", "compliant", "secure", "scalable", "centralized", 
+            "standardized", "policy-compliant", "audit-ready", "governance", "institutional"
+        ])
+    
+    # Industry-specific trending words
+    if any(term in persona_lower for term in ['healthcare', 'medical']):
+        trending_words.extend([
+            "HIPAA-compliant", "patient-centered", "evidence-based", "clinically-proven", 
+            "telehealth", "precision", "wellness-focused", "care coordination"
+        ])
+    
+    elif any(term in persona_lower for term in ['finance', 'banking']):
+        trending_words.extend([
+            "fintech", "blockchain", "secure", "regulated", "compliance-ready", 
+            "fraud-protection", "real-time", "financial wellness", "digital banking"
+        ])
+    
+    elif any(term in persona_lower for term in ['education', 'learning']):
+        trending_words.extend([
+            "adaptive learning", "personalized curriculum", "skill-building", 
+            "certification-ready", "microlearning", "gamified education", "virtual classroom"
+        ])
+    
+    # Behavioral trait words
+    if any(term in persona_lower for term in ['busy', 'time-constrained']):
+        trending_words.extend([
+            "time-saving", "automated", "streamlined", "efficient", "quick-setup", 
+            "instant", "on-the-go", "mobile-optimized", "fast-track"
+        ])
+    
+    elif any(term in persona_lower for term in ['quality-focused', 'premium']):
+        trending_words.extend([
+            "premium", "high-quality", "artisanal", "crafted", "exclusive", 
+            "luxury", "boutique", "curated", "elite", "sophisticated"
+        ])
+    
+    elif any(term in persona_lower for term in ['budget-conscious', 'cost-effective']):
+        trending_words.extend([
+            "affordable", "value-packed", "cost-effective", "budget-friendly", 
+            "economical", "smart investment", "maximum ROI", "cost-saving", "efficient pricing"
+        ])
+    
+    # Remove duplicates and shuffle for variety
+    trending_words = list(set(trending_words))
+    random.shuffle(trending_words)
+    
+    # Return 8-15 trending words
+    return trending_words[:12]
+
 
 # Helper function for MongoDB serialization
 def prepare_for_mongo(data):
