@@ -432,11 +432,86 @@ class BehavioralAnalysisProcessor:
             'market_size_estimate': random.randint(10000, 500000)  # Mock market size
         }
 
-class NewsSearchService:
-    """News search service with mock and real API support"""
+class RSSNewsService:
+    """RSS feed news aggregation service for recent, real news"""
     
     def __init__(self):
         self.categorization_service = NewsCategorizationService()
+        
+        # Reliable RSS feeds for different categories
+        self.rss_feeds = {
+            "technology": [
+                "https://feeds.feedburner.com/oreilly/radar",
+                "https://www.wired.com/feed/rss",
+                "https://techcrunch.com/feed/",
+                "https://feeds.arstechnica.com/arstechnica/index"
+            ],
+            "business": [
+                "https://feeds.bloomberg.com/markets/news.rss",
+                "https://www.reuters.com/markets/feed/",
+                "https://feeds.fortune.com/fortune/headlines"
+            ],
+            "marketing": [
+                "https://feeds.feedburner.com/MarketingLand",
+                "https://www.marketingdive.com/feeds/news/",
+                "https://feeds.adweek.com/adweek/adweek-news-feed"
+            ],
+            "general": [
+                "https://feeds.reuters.com/reuters/topNews",
+                "https://feeds.bbci.co.uk/news/rss.xml",
+                "https://feeds.npr.org/1001/rss.xml"
+            ]
+        }
+        
+        # Fallback news data for when RSS feeds are unavailable
+        self.fallback_news = [
+            {
+                "title": "AI Revolutionizes Marketing Personalization in 2024",
+                "summary": "Latest AI technologies are enabling unprecedented levels of marketing personalization, with companies reporting 40% improvement in engagement rates.",
+                "url": "https://example.com/ai-marketing-2024",
+                "published": datetime.now().strftime("%Y-%m-%d"),
+                "source": "Marketing Technology Today",
+                "category": "Technology"
+            },
+            {
+                "title": "Consumer Behavior Shifts Drive New Marketing Strategies",
+                "summary": "Recent studies show significant changes in consumer preferences, leading brands to adopt more authentic and value-driven messaging approaches.",
+                "url": "https://example.com/consumer-behavior-2024",
+                "published": (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
+                "source": "Business Insights Weekly",
+                "category": "Business"
+            },
+            {
+                "title": "Social Media Trends Reshape Digital Advertising",
+                "summary": "Platform algorithm changes and user behavior evolution are forcing advertisers to rethink their social media strategies for better ROI.",
+                "url": "https://example.com/social-media-trends-2024", 
+                "published": (datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d"),
+                "source": "Digital Marketing Review",
+                "category": "Culture"
+            },
+            {
+                "title": "Sustainability Marketing Gains Momentum Across Industries",
+                "summary": "Companies worldwide are integrating sustainability messaging into their marketing campaigns, responding to growing consumer environmental consciousness.", 
+                "url": "https://example.com/sustainability-marketing-2024",
+                "published": (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
+                "source": "Sustainable Business News",
+                "category": "General"
+            },
+            {
+                "title": "E-commerce Personalization Drives 25% Revenue Increase",
+                "summary": "New research reveals that advanced personalization techniques in e-commerce are delivering significant revenue improvements for online retailers.",
+                "url": "https://example.com/ecommerce-personalization-2024",
+                "published": datetime.now().strftime("%Y-%m-%d"),
+                "source": "Retail Technology News",
+                "category": "Business"
+            }
+        ]
+
+class NewsSearchService:
+    """News search service with RSS and mock support"""
+    
+    def __init__(self):
+        self.rss_service = RSSNewsService()
         self.mock_news_data = {
             "technology": [
                 {
