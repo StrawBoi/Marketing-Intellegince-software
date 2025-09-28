@@ -479,35 +479,107 @@ const EnhancedMarketingIntelligence = () => {
                 {/* News Section */}
                 <CategorizedNews newsArticles={intelligenceData.news_insights?.recent_articles} />
 
-                {/* Ad Copy Section */}
+                {/* Professional Ad Copy Section */}
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <FileText className="w-5 h-5 text-orange-600" />
-                      Platform-Specific Ad Copy
+                      Professional Ad Copy Suite
                     </CardTitle>
                     <CardDescription>
-                      Ready-to-use ad copy optimized for different social media platforms
+                      Complete, deployment-ready ad campaigns with headlines, copy, CTAs, and color psychology
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {Object.entries(intelligenceData.ad_copy_variations || {}).map(([platform, copy]) => (
-                        <Card key={platform} className="bg-gradient-to-br from-slate-50 to-slate-100">
-                          <CardContent className="p-4">
-                            <div className="flex justify-between items-center mb-3">
-                              <h4 className="font-semibold capitalize text-slate-900">{platform}</h4>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      {Object.entries(intelligenceData.ad_copy_variations || {}).map(([platform, adData]) => (
+                        <Card key={platform} className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 hover:shadow-lg transition-all">
+                          <CardContent className="p-6">
+                            <div className="flex justify-between items-center mb-4">
+                              <h4 className="font-bold capitalize text-slate-900 text-lg flex items-center gap-2">
+                                {platform === 'instagram' && <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-500 rounded"></div>}
+                                {platform === 'linkedin' && <div className="w-5 h-5 bg-blue-600 rounded"></div>}
+                                {platform === 'tiktok' && <div className="w-5 h-5 bg-black rounded"></div>}
+                                {platform}
+                              </h4>
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => copyToClipboard(copy, `${platform} ad copy`)}
-                                className="h-8 w-8 p-0"
+                                onClick={() => copyToClipboard(
+                                  typeof adData === 'string' ? adData : 
+                                  `${adData.headline}\n\n${adData.body}\n\n${adData.cta}`, 
+                                  `${platform} ad copy`
+                                )}
+                                className="h-8 w-8 p-0 hover:bg-slate-100"
                                 data-testid={`copy-${platform}-button`}
                               >
                                 <Copy className="w-4 h-4" />
                               </Button>
                             </div>
-                            <p className="text-sm text-slate-700 leading-relaxed">{copy}</p>
+                            
+                            {typeof adData === 'string' ? (
+                              // Fallback for simple string format
+                              <p className="text-sm text-slate-700 leading-relaxed">{adData}</p>
+                            ) : (
+                              // Enhanced professional ad copy structure
+                              <div className="space-y-4">
+                                {/* Headline */}
+                                <div>
+                                  <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Headline</Label>
+                                  <h5 className="font-bold text-slate-900 text-base leading-tight mt-1">{adData.headline}</h5>
+                                </div>
+                                
+                                {/* Body */}
+                                <div>
+                                  <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Body Copy</Label>
+                                  <p className="text-sm text-slate-700 leading-relaxed mt-1">{adData.body}</p>
+                                </div>
+                                
+                                {/* Keywords */}
+                                <div>
+                                  <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Keywords</Label>
+                                  <div className="flex flex-wrap gap-1 mt-1">
+                                    {adData.keywords.split(',').map((keyword, index) => (
+                                      <Badge key={index} variant="secondary" className="text-xs bg-blue-100 text-blue-700">
+                                        {keyword.trim()}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                                
+                                {/* CTA */}
+                                <div>
+                                  <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Call-to-Action</Label>
+                                  <Button 
+                                    className="mt-2 w-full font-semibold" 
+                                    variant="default"
+                                    size="sm"
+                                  >
+                                    {adData.cta}
+                                  </Button>
+                                </div>
+                                
+                                {/* Color Palette */}
+                                <div>
+                                  <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wider">Color Psychology</Label>
+                                  <div className="mt-2">
+                                    <div className="flex gap-2 mb-2">
+                                      {adData.color_palette && adData.color_palette.match(/#[0-9A-Fa-f]{6}/g)?.slice(0, 4).map((color, index) => (
+                                        <div 
+                                          key={index}
+                                          className="w-6 h-6 rounded border border-slate-300 shadow-sm"
+                                          style={{ backgroundColor: color }}
+                                          title={color}
+                                        ></div>
+                                      ))}
+                                    </div>
+                                    <p className="text-xs text-slate-600 leading-relaxed">
+                                      {adData.color_palette?.replace(/#[0-9A-Fa-f]{6}/g, '').replace(/,/g, '').trim()}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                           </CardContent>
                         </Card>
                       ))}
