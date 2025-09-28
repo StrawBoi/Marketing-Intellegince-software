@@ -11,23 +11,23 @@ const LandingPage = () => {
   const features = [
     {
       icon: <Target className="w-6 h-6" />,
-      title: "Persona-Driven Content",
-      description: "Generate highly targeted campaigns based on detailed customer personas"
+      title: "AI Marketing Intelligence", 
+      description: "Advanced persona analysis with behavioral insights and trending keywords"
     },
     {
       icon: <Zap className="w-6 h-6" />,
-      title: "Instant Generation", 
-      description: "Create personalized marketing content in seconds, not hours"
+      title: "Real-Time News Analysis", 
+      description: "Leverage current events and market trends for timely campaign strategies"
     },
     {
       icon: <BarChart3 className="w-6 h-6" />,
-      title: "Campaign Analytics",
-      description: "Track and analyze your campaign performance with detailed insights"
+      title: "Visual Persona Generation",
+      description: "AI-generated persona images and multi-platform ad copy variations"
     },
     {
       icon: <Users className="w-6 h-6" />,
-      title: "Multi-Segment Support",
-      description: "Create campaigns for different customer segments simultaneously"
+      title: "Campaign Personalization",
+      description: "Create highly targeted campaigns with geographic and demographic targeting"
     }
   ];
 
