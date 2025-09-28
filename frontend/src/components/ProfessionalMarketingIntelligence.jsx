@@ -825,10 +825,35 @@ const ProfessionalMarketingIntelligence = () => {
                 <p className="text-sm text-slate-600">AI-Powered Campaign Analytics & Strategic Insights</p>
               </div>
             </div>
-            <Badge variant="secondary" className="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-4 py-2">
-              <Sparkles className="w-4 h-4 mr-2" />
-              Professional Edition
-            </Badge>
+            <div className="flex items-center space-x-4">
+              <Badge variant="secondary" className="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-4 py-2">
+                <Sparkles className="w-4 h-4 mr-2" />
+                Professional Edition
+              </Badge>
+              {user && (
+                <div className="flex items-center space-x-3">
+                  <div className="text-right">
+                    <div className="text-sm font-medium text-slate-900">{user.name}</div>
+                    <div className="text-xs text-slate-500">{user.subscription}</div>
+                  </div>
+                  <div className="w-8 h-8 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                    {user.avatar}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      localStorage.removeItem('marketingProUser');
+                      setUser(null);
+                      setIsAuthenticated(false);
+                    }}
+                    className="text-slate-500 hover:text-slate-700"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
