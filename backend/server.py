@@ -97,6 +97,38 @@ class CampaignHistoryList(BaseModel):
     page: int
     limit: int
 
+# Phase 6: Campaign Performance Models
+class CampaignMetricsCreate(BaseModel):
+    campaign_id: str = Field(..., description="ID of the campaign this metrics data belongs to")
+    clicks: int = Field(..., ge=0, description="Number of clicks")
+    conversions: int = Field(..., ge=0, description="Number of conversions")
+    spend: float = Field(..., ge=0, description="Amount spent on the campaign")
+    date_recorded: str = Field(default_factory=lambda: datetime.now(timezone.utc).date().isoformat(), description="Date when metrics were recorded")
+
+class CampaignMetricsResponse(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    campaign_id: str
+    clicks: int
+    conversions: int
+    spend: float
+    date_recorded: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    
+    # Calculated metrics
+    conversion_rate: float = Field(default=0.0, description="Conversion rate percentage")
+    cost_per_click: float = Field(default=0.0, description="Cost per click")
+    cost_per_conversion: float = Field(default=0.0, description="Cost per conversion")
+    roi: float = Field(default=0.0, description="Return on investment percentage")
+
+class PerformanceAnalysisResponse(BaseModel):
+    campaign_id: str
+    performance_summary: Dict[str, Any]
+    strategic_recommendations: List[str]
+    key_metrics: Dict[str, float]
+    improvement_areas: List[str]
+    competitive_insights: List[str]
+    next_steps: List[str]
+
 
 # Advanced Analysis Logic Functions
 def analyze_persona_behavior(persona: str, product_description: str, geographic_location: Optional[str] = None, interests: Optional[str] = None) -> str:
