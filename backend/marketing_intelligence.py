@@ -656,39 +656,97 @@ class ImageGenerationService:
         # Return a data URL with placeholder image
         return f"data:image/png;base64,{self.placeholder_image}"
     
-    def _create_image_prompt(self, age_range: str, location: str, interests: List[str], trending_keywords: List[str]) -> str:
-        """Create detailed prompt for AI image generation"""
+    def _create_enhanced_image_prompt(self, age_range: str, location: str, interests: List[str], trending_keywords: List[str]) -> str:
+        """Create detailed, professional prompt for DALL-E 3 persona generation"""
         
         age_descriptors = {
-            "18-24": "young adult, energetic, modern style",
-            "25-34": "professional young adult, confident, contemporary",
-            "35-44": "mature professional, established, polished",
-            "45-54": "experienced professional, sophisticated, refined",
-            "55+": "mature, distinguished, classic style"
+            "18-24": "young adult aged 20-22, energetic and modern, Gen Z aesthetic",
+            "25-34": "professional in late twenties, confident and contemporary, millennial style",
+            "35-44": "established professional in mid-thirties, polished and mature appearance",
+            "45-54": "experienced professional, sophisticated and refined, business executive style", 
+            "55+": "distinguished mature professional, classic and authoritative presence"
         }
         
         location_styles = {
-            "new york": "urban professional, metropolitan background",
-            "california": "casual professional, modern tech environment",
-            "london": "sophisticated European style, classic setting",
-            "texas": "confident, approachable, modern setting"
+            "new york": "urban professional with metropolitan sophistication",
+            "san francisco": "tech-forward professional with innovative style",
+            "california": "relaxed professional with modern West Coast aesthetic",
+            "london": "refined European professional with classic elegance",
+            "texas": "confident American professional with approachable demeanor",
+            "chicago": "midwest professional with practical, grounded appearance"
         }
         
-        age_desc = age_descriptors.get(age_range, age_descriptors["25-34"])
-        location_style = next((style for key, style in location_styles.items() if key in location.lower()), "professional, neutral background")
+        interest_styling = {
+            "technology": "wearing modern, minimalist clothing suggesting tech-savvy personality",
+            "business": "in sharp business attire suggesting leadership and success",
+            "fitness": "with a healthy, energetic appearance suggesting active lifestyle",
+            "art": "with creative, stylish elements suggesting artistic sensibility",
+            "fashion": "impeccably styled with attention to fashion details",
+            "travel": "with a worldly, sophisticated appearance",
+            "sustainability": "with natural, conscious styling choices"
+        }
         
-        interests_desc = f"interested in {', '.join(interests[:3])}" if interests else "diverse interests"
-        keywords_desc = f"embodying {', '.join(trending_keywords[:3])}" if trending_keywords else ""
+        # Build comprehensive description
+        age_desc = age_descriptors.get(age_range, age_descriptors["25-34"])
+        
+        location_key = next((key for key in location_styles.keys() if key.lower() in location.lower()), "general")
+        location_style = location_styles.get(location_key, "professional with approachable demeanor")
+        
+        # Get styling cues from interests
+        styling_elements = []
+        for interest in interests[:2]:  # Use top 2 interests
+            interest_lower = interest.lower()
+            for key, style in interest_styling.items():
+                if key in interest_lower:
+                    styling_elements.append(style)
+                    break
+        
+        styling_desc = styling_elements[0] if styling_elements else "in professional business casual attire"
         
         prompt = f"""
-        A realistic, professional headshot of a {age_desc} person, {location_style}.
-        The person appears {interests_desc}, {keywords_desc}.
-        High quality, professional lighting, approachable expression, 
-        suitable for marketing persona representation.
-        Photorealistic style, business casual attire.
+        Professional marketing persona photograph: A {age_desc}, {location_style}, {styling_desc}.
+        
+        The person has a warm, approachable smile and confident posture. Shot with professional studio lighting against a clean, modern background with subtle depth of field. The image should be suitable for a marketing campaign targeting their demographic.
+        
+        Style: Professional headshot photography, high resolution, realistic, business-appropriate, diverse and inclusive representation. Natural expression conveying trust and competence.
+        
+        Technical: Shot with 85mm lens, soft studio lighting, neutral background, professional retouching quality.
         """
         
         return prompt.strip()
+    
+    async def _create_persona_fallback_image(self, age_range: str, location: str, interests: List[str]) -> str:
+        """Create professional fallback persona image using CSS/SVG"""
+        
+        # Create a professional placeholder with persona details
+        age_display = f"{age_range} years"
+        interests_display = ", ".join(interests[:3]) if interests else "General interests"
+        
+        # Generate SVG placeholder with professional styling
+        svg_content = f"""
+        <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#667eea"/>
+                    <stop offset="100%" style="stop-color:#764ba2"/>
+                </linearGradient>
+            </defs>
+            <rect width="400" height="400" fill="url(#bg)"/>
+            <circle cx="200" cy="160" r="60" fill="#ffffff" opacity="0.9"/>
+            <circle cx="200" cy="160" r="45" fill="#4338ca"/>
+            <text x="200" y="170" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">P</text>
+            
+            <rect x="50" y="260" width="300" height="100" rx="10" fill="#ffffff" opacity="0.95"/>
+            <text x="200" y="285" text-anchor="middle" fill="#1f2937" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Marketing Persona</text>
+            <text x="200" y="305" text-anchor="middle" fill="#4b5563" font-family="Arial, sans-serif" font-size="14">{age_display} • {location}</text>
+            <text x="200" y="325" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">{interests_display}</text>
+            <text x="200" y="345" text-anchor="middle" fill="#9ca3af" font-family="Arial, sans-serif" font-size="10">Professional Marketing Persona</text>
+        </svg>
+        """
+        
+        # Convert SVG to base64 data URL
+        svg_base64 = base64.b64encode(svg_content.encode('utf-8')).decode('utf-8')
+        return f"data:image/svg+xml;base64,{svg_base64}"
 
 class AdCopyGenerator:
     """AI-powered professional ad copy generation service"""
