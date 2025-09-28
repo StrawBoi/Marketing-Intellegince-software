@@ -145,6 +145,291 @@ class PersonaAnalyzer:
             "behavior_analysis_summary": behavior_analysis
         }
 
+class WordCloudProcessor:
+    """Process keywords for word cloud visualization"""
+    
+    def __init__(self):
+        # Base importance weights for different keyword categories
+        self.category_weights = {
+            'age_group': 80,
+            'location': 70,
+            'interest': 90,
+            'behavior': 75,
+            'general': 60
+        }
+        
+        # High-impact keywords get bonus weight
+        self.high_impact_keywords = {
+            'AI', 'innovation', 'sustainable', 'premium', 'authentic', 'digital',
+            'efficient', 'quality', 'exclusive', 'personalized', 'smart', 'creative'
+        }
+    
+    def generate_word_cloud_data(self, keywords: List[str], persona_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Generate weighted word cloud data from trending keywords"""
+        
+        if not keywords:
+            return []
+        
+        # Calculate base frequencies and apply weights
+        word_weights = {}
+        
+        for i, keyword in enumerate(keywords):
+            # Base weight decreases with position in list
+            base_weight = max(100 - (i * 5), 20)
+            
+            # Apply category-specific weights
+            keyword_lower = keyword.lower()
+            category_multiplier = 1.0
+            
+            # Check if keyword relates to specific categories
+            if any(age in keyword_lower for age in ['gen', 'millennial', 'boomer']):
+                category_multiplier = self.category_weights['age_group'] / 100
+            elif any(loc in keyword_lower for loc in ['local', 'regional', 'urban', 'metropolitan']):
+                category_multiplier = self.category_weights['location'] / 100
+            elif keyword in self.high_impact_keywords:
+                category_multiplier = self.category_weights['interest'] / 100
+            else:
+                category_multiplier = self.category_weights['general'] / 100
+            
+            # High-impact keywords get bonus
+            if keyword in self.high_impact_keywords:
+                base_weight *= 1.3
+            
+            # Add some randomization for visual variety
+            randomization_factor = random.uniform(0.8, 1.2)
+            
+            final_weight = int(base_weight * category_multiplier * randomization_factor)
+            word_weights[keyword] = max(final_weight, 15)  # Minimum weight of 15
+        
+        # Convert to word cloud format and sort by weight
+        word_cloud_data = [
+            {"text": word, "value": weight}
+            for word, weight in word_weights.items()
+        ]
+        
+        # Sort by value (highest first) and limit to top 20 words
+        word_cloud_data.sort(key=lambda x: x['value'], reverse=True)
+        
+        return word_cloud_data[:20]
+
+class NewsCategorizationService:
+    """Categorize news articles into predefined categories"""
+    
+    def __init__(self):
+        self.category_keywords = {
+            'Technology': [
+                'ai', 'artificial intelligence', 'machine learning', 'tech', 'digital', 
+                'software', 'app', 'blockchain', 'crypto', 'automation', 'robot', 
+                'innovation', 'startup', 'silicon valley', 'cloud', 'cybersecurity'
+            ],
+            'Business': [
+                'business', 'company', 'corporate', 'market', 'economy', 'financial',
+                'revenue', 'profit', 'investment', 'stock', 'trade', 'commerce',
+                'enterprise', 'industry', 'ceo', 'merger', 'acquisition'
+            ],
+            'Politics': [
+                'political', 'government', 'election', 'policy', 'vote', 'campaign',
+                'senator', 'congress', 'parliament', 'president', 'minister', 'law',
+                'legislation', 'democracy', 'republican', 'democrat'
+            ],
+            'Fashion': [
+                'fashion', 'style', 'clothing', 'designer', 'runway', 'model',
+                'brand', 'apparel', 'trend', 'luxury', 'beauty', 'cosmetics',
+                'makeup', 'skincare', 'accessory', 'jewelry'
+            ],
+            'Sports': [
+                'sports', 'football', 'basketball', 'soccer', 'baseball', 'tennis',
+                'olympic', 'championship', 'tournament', 'athlete', 'team', 'game',
+                'match', 'season', 'coach', 'player', 'fitness'
+            ],
+            'Culture': [
+                'culture', 'art', 'music', 'film', 'movie', 'entertainment', 'celebrity',
+                'artist', 'concert', 'festival', 'museum', 'gallery', 'book', 'author',
+                'theater', 'media', 'social media', 'influencer'
+            ]
+        }
+    
+    def categorize_headline(self, headline: str, summary: str = "") -> str:
+        """Categorize a news headline into predefined categories"""
+        
+        text_to_analyze = (headline + " " + summary).lower()
+        
+        # Count keyword matches for each category
+        category_scores = {}
+        
+        for category, keywords in self.category_keywords.items():
+            score = 0
+            for keyword in keywords:
+                # Count occurrences of each keyword
+                keyword_count = text_to_analyze.count(keyword.lower())
+                if keyword_count > 0:
+                    # Longer keywords get higher weight
+                    weight = len(keyword.split()) * 2
+                    score += keyword_count * weight
+            
+            category_scores[category] = score
+        
+        # Return category with highest score, or 'General' if no matches
+        if max(category_scores.values()) > 0:
+            return max(category_scores.items(), key=lambda x: x[1])[0]
+        else:
+            return 'General'
+    
+    def process_news_articles(self, articles: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Process and categorize news articles"""
+        
+        categorized_articles = []
+        
+        for article in articles:
+            categorized_article = {
+                'headline': article.get('title', ''),
+                'url': article.get('url', ''),
+                'date': article.get('published', ''),
+                'category': self.categorize_headline(
+                    article.get('title', ''),
+                    article.get('summary', '')
+                ),
+                'summary': article.get('summary', ''),
+                'source': article.get('source', '')
+            }
+            categorized_articles.append(categorized_article)
+        
+        return categorized_articles
+
+class BehavioralAnalysisProcessor:
+    """Generate behavioral analysis data for charts and visualizations"""
+    
+    def __init__(self):
+        # Mapping of age groups to key motivational factors
+        self.age_group_motivations = {
+            '18-24': {
+                'Social Recognition': 85,
+                'Authenticity': 90,
+                'Innovation': 80,
+                'Affordability': 75,
+                'Convenience': 70
+            },
+            '25-34': {
+                'Efficiency': 85,
+                'Career Growth': 90,
+                'Quality': 80,
+                'Innovation': 75,
+                'Work-Life Balance': 85
+            },
+            '35-44': {
+                'Reliability': 90,
+                'Family Security': 85,
+                'Quality': 88,
+                'Time Saving': 80,
+                'Value for Money': 75
+            },
+            '45-54': {
+                'Expertise': 85,
+                'Premium Quality': 90,
+                'Reliability': 88,
+                'Status': 70,
+                'Tradition': 75
+            },
+            '55+': {
+                'Trust': 95,
+                'Simplicity': 85,
+                'Personal Service': 90,
+                'Heritage': 80,
+                'Security': 85
+            }
+        }
+        
+        # Interest-based motivation modifiers
+        self.interest_modifiers = {
+            'technology': {'Innovation': +10, 'Efficiency': +8},
+            'fitness': {'Health': +15, 'Performance': +10},
+            'sustainability': {'Social Responsibility': +12, 'Long-term Value': +8},
+            'art': {'Creativity': +15, 'Uniqueness': +10},
+            'business': {'Success': +10, 'Networking': +8},
+            'travel': {'Adventure': +12, 'Experience': +10},
+            'music': {'Expression': +10, 'Community': +8},
+            'fashion': {'Style': +15, 'Trend Awareness': +10}
+        }
+    
+    def generate_behavioral_chart_data(self, age_range: str, interests: List[str], location: str = None) -> List[Dict[str, Any]]:
+        """Generate behavioral analysis chart data"""
+        
+        # Get base motivations for age group
+        base_motivations = self.age_group_motivations.get(age_range, self.age_group_motivations['25-34']).copy()
+        
+        # Apply interest-based modifiers
+        for interest in interests:
+            interest_lower = interest.lower()
+            for interest_key, modifiers in self.interest_modifiers.items():
+                if interest_key in interest_lower or interest_lower in interest_key:
+                    for motivation, modifier in modifiers.items():
+                        if motivation in base_motivations:
+                            base_motivations[motivation] = min(100, base_motivations[motivation] + modifier)
+                        else:
+                            base_motivations[motivation] = min(100, 60 + modifier)
+        
+        # Geographic location modifiers
+        if location:
+            location_lower = location.lower()
+            if 'new york' in location_lower or 'nyc' in location_lower:
+                base_motivations['Efficiency'] = min(100, base_motivations.get('Efficiency', 70) + 10)
+                base_motivations['Status'] = min(100, base_motivations.get('Status', 60) + 8)
+            elif 'california' in location_lower or 'san francisco' in location_lower:
+                base_motivations['Innovation'] = min(100, base_motivations.get('Innovation', 70) + 12)
+                base_motivations['Social Responsibility'] = min(100, base_motivations.get('Social Responsibility', 60) + 10)
+            elif 'london' in location_lower or 'uk' in location_lower:
+                base_motivations['Quality'] = min(100, base_motivations.get('Quality', 70) + 8)
+                base_motivations['Heritage'] = min(100, base_motivations.get('Heritage', 60) + 10)
+        
+        # Convert to chart format and sort by value
+        chart_data = [
+            {"label": motivation, "value": value}
+            for motivation, value in base_motivations.items()
+        ]
+        
+        # Sort by value (highest first) and take top 6 for readability
+        chart_data.sort(key=lambda x: x['value'], reverse=True)
+        
+        return chart_data[:6]
+    
+    def generate_demographic_breakdown(self, age_range: str, location: str, interests: List[str]) -> Dict[str, Any]:
+        """Generate demographic breakdown data"""
+        
+        # Age group distribution
+        age_groups = {
+            '18-24': {'label': 'Gen Z', 'percentage': 0},
+            '25-34': {'label': 'Millennials', 'percentage': 0},
+            '35-44': {'label': 'Gen X Early', 'percentage': 0},
+            '45-54': {'label': 'Gen X Late', 'percentage': 0},
+            '55+': {'label': 'Boomers+', 'percentage': 0}
+        }
+        
+        # Set primary age group to 70-80%, others get smaller percentages
+        primary_percentage = random.randint(75, 85)
+        age_groups[age_range]['percentage'] = primary_percentage
+        
+        # Distribute remaining percentage among adjacent age groups
+        remaining = 100 - primary_percentage
+        adjacent_groups = []
+        
+        age_order = ['18-24', '25-34', '35-44', '45-54', '55+']
+        current_index = age_order.index(age_range)
+        
+        if current_index > 0:
+            adjacent_groups.append(age_order[current_index - 1])
+        if current_index < len(age_order) - 1:
+            adjacent_groups.append(age_order[current_index + 1])
+        
+        for group in adjacent_groups:
+            age_groups[group]['percentage'] = remaining // len(adjacent_groups)
+        
+        return {
+            'age_distribution': list(age_groups.values()),
+            'primary_location': location,
+            'top_interests': interests[:4],  # Top 4 interests
+            'market_size_estimate': random.randint(10000, 500000)  # Mock market size
+        }
+
 class NewsSearchService:
     """News search service with mock and real API support"""
     
