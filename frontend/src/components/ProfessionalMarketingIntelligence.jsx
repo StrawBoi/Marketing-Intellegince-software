@@ -365,7 +365,7 @@ const ProfessionalMarketingIntelligence = () => {
                         <div className="text-xs font-medium text-slate-500 mb-1">Body</div>
                         <div className="text-sm text-slate-600">{copy.body}</div>
                       </div>
-                      {copy.keywords && (
+                      {copy.keywords && Array.isArray(copy.keywords) && copy.keywords.length > 0 && (
                         <div>
                           <div className="text-xs font-medium text-slate-500 mb-1">Keywords</div>
                           <div className="flex flex-wrap gap-1">
