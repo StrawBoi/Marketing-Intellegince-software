@@ -7,7 +7,7 @@ import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
-import { ArrowLeft, Sparkles, Send, Copy, Download, RefreshCw, Clock, Target, Package } from 'lucide-react';
+import { ArrowLeft, Sparkles, Send, Copy, Download, RefreshCw, Clock, Target, Package, MapPin, Heart } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
 
