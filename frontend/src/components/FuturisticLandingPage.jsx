@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
-import { ArrowRight, Target, Zap, BarChart3, Users, Sparkles, CheckCircle, Brain, Cpu, Palette, Eye, TrendingUp, Star, Layers } from 'lucide-react';
+import { ArrowRight, Target, Zap, BarChart3, Users, Sparkles, CheckCircle, Brain, Cpu, Palette, Eye, TrendingUp, Star, Layers, LogIn, User } from 'lucide-react';
+import AuthenticationMenu from './AuthenticationMenu';
 
 const FuturisticLandingPage = () => {
   const navigate = useNavigate();
