@@ -703,6 +703,264 @@ const IntegratedMarketingIntelligence = () => {
         </div>
       </div>
 
+      {/* Performance Modal */}
+      {showPerformanceModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              {!showPerformanceAnalysis ? (
+                <>
+                  {/* Performance Metrics Input */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h2 className="text-2xl font-bold text-slate-900 flex items-center">
+                        <BarChart3 className="w-6 h-6 mr-2 text-orange-600" />
+                        Campaign Performance Metrics
+                      </h2>
+                      <p className="text-slate-600 mt-1">
+                        Track performance data for: {selectedCampaignForMetrics?.age_range} • {selectedCampaignForMetrics?.geographic_location}
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={closePerformanceModal}
+                      className="h-8 w-8 p-0"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="clicks" className="text-base font-semibold text-slate-700 flex items-center">
+                          <MousePointer className="w-4 h-4 mr-2 text-blue-600" />
+                          Clicks
+                        </Label>
+                        <input
+                          id="clicks"
+                          type="number"
+                          min="0"
+                          value={performanceMetrics.clicks}
+                          onChange={(e) => setPerformanceMetrics({...performanceMetrics, clicks: e.target.value})}
+                          placeholder="Total number of clicks"
+                          className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                          data-testid="clicks-input"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="conversions" className="text-base font-semibold text-slate-700 flex items-center">
+                          <ShoppingCart className="w-4 h-4 mr-2 text-green-600" />
+                          Conversions
+                        </Label>
+                        <input
+                          id="conversions"
+                          type="number"
+                          min="0"
+                          value={performanceMetrics.conversions}
+                          onChange={(e) => setPerformanceMetrics({...performanceMetrics, conversions: e.target.value})}
+                          placeholder="Number of conversions"
+                          className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                          data-testid="conversions-input"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="spend" className="text-base font-semibold text-slate-700 flex items-center">
+                          <DollarSign className="w-4 h-4 mr-2 text-purple-600" />
+                          Total Spend ($)
+                        </Label>
+                        <input
+                          id="spend"
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={performanceMetrics.spend}
+                          onChange={(e) => setPerformanceMetrics({...performanceMetrics, spend: e.target.value})}
+                          placeholder="Campaign spend amount"
+                          className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                          data-testid="spend-input"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="date_recorded" className="text-base font-semibold text-slate-700 flex items-center">
+                          <Calendar className="w-4 h-4 mr-2 text-indigo-600" />
+                          Date Recorded
+                        </Label>
+                        <input
+                          id="date_recorded"
+                          type="date"
+                          value={performanceMetrics.date_recorded}
+                          onChange={(e) => setPerformanceMetrics({...performanceMetrics, date_recorded: e.target.value})}
+                          className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                          data-testid="date-recorded-input"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end space-x-4 pt-4 border-t">
+                      <Button variant="outline" onClick={closePerformanceModal}>
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleSubmitMetrics}
+                        disabled={isSubmittingMetrics}
+                        className="bg-gradient-to-r from-orange-600 to-red-600 text-white"
+                        data-testid="submit-metrics-button"
+                      >
+                        {isSubmittingMetrics || isAnalyzing ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                            {isAnalyzing ? 'Analyzing...' : 'Saving...'}
+                          </>
+                        ) : (
+                          <>
+                            <TrendingUp className="w-4 h-4 mr-2" />
+                            Save & Analyze
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Performance Analysis Results */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h2 className="text-2xl font-bold text-slate-900 flex items-center">
+                        <Activity className="w-6 h-6 mr-2 text-green-600" />
+                        Strategic Performance Analysis
+                      </h2>
+                      <p className="text-slate-600 mt-1">
+                        AI-powered insights and recommendations
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={closePerformanceModal}
+                      className="h-8 w-8 p-0"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  {performanceAnalysis && (
+                    <div className="space-y-6">
+                      {/* Key Metrics Summary */}
+                      <Card className="border-green-200 bg-green-50/30">
+                        <CardHeader>
+                          <CardTitle className="text-lg flex items-center text-green-800">
+                            <Target className="w-5 h-5 mr-2" />
+                            Performance Summary
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-green-700">
+                                {performanceAnalysis.key_metrics.conversion_rate.toFixed(2)}%
+                              </div>
+                              <div className="text-sm text-slate-600">Conversion Rate</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-blue-700">
+                                ${performanceAnalysis.key_metrics.cost_per_click.toFixed(2)}
+                              </div>
+                              <div className="text-sm text-slate-600">Cost Per Click</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-purple-700">
+                                ${performanceAnalysis.key_metrics.cost_per_conversion.toFixed(2)}
+                              </div>
+                              <div className="text-sm text-slate-600">Cost Per Conversion</div>
+                            </div>
+                            <div className="text-center">
+                              <div className={`text-2xl font-bold ${performanceAnalysis.key_metrics.roi >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                                {performanceAnalysis.key_metrics.roi.toFixed(1)}%
+                              </div>
+                              <div className="text-sm text-slate-600">ROI</div>
+                            </div>
+                          </div>
+                          <div className="mt-4 text-center">
+                            <Badge 
+                              variant="secondary" 
+                              className={`${
+                                performanceAnalysis.performance_summary.overall_grade === 'Excellent' ? 'bg-green-100 text-green-800' :
+                                performanceAnalysis.performance_summary.overall_grade === 'Good' ? 'bg-blue-100 text-blue-800' :
+                                performanceAnalysis.performance_summary.overall_grade === 'Average' ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-red-100 text-red-800'
+                              }`}
+                            >
+                              Overall Grade: {performanceAnalysis.performance_summary.overall_grade}
+                            </Badge>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Strategic Recommendations */}
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-lg flex items-center text-indigo-800">
+                            <Sparkles className="w-5 h-5 mr-2" />
+                            Strategic Recommendations
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            {performanceAnalysis.strategic_recommendations.map((recommendation, index) => (
+                              <div key={index} className="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500">
+                                <p className="text-slate-700" dangerouslySetInnerHTML={{ __html: recommendation.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Next Steps */}
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-lg flex items-center text-purple-800">
+                            <Check className="w-5 h-5 mr-2" />
+                            Recommended Next Steps
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2">
+                            {performanceAnalysis.next_steps.map((step, index) => (
+                              <div key={index} className="flex items-start">
+                                <div className="w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5 flex-shrink-0">
+                                  {index + 1}
+                                </div>
+                                <p className="text-slate-700">{step}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <div className="flex justify-center pt-4">
+                        <Button
+                          onClick={closePerformanceModal}
+                          className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8"
+                        >
+                          <Check className="w-4 h-4 mr-2" />
+                          Got It!
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Floating Dashboard */}
       <FloatingDashboard
         isOpen={showDashboard}
