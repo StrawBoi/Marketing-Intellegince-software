@@ -18,6 +18,8 @@ const CampaignGenerator = () => {
   const navigate = useNavigate();
   const [customerPersona, setCustomerPersona] = useState('');
   const [productDescription, setProductDescription] = useState('');
+  const [geographicLocation, setGeographicLocation] = useState('');
+  const [interests, setInterests] = useState('');
   const [generatedContent, setGeneratedContent] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [recentCampaigns, setRecentCampaigns] = useState([]);
