@@ -40,6 +40,8 @@ class StatusCheckCreate(BaseModel):
 class CampaignRequest(BaseModel):
     customer_persona: str = Field(..., description="Description of the target customer persona")
     product_description: str = Field(..., description="Description of the product or service")
+    geographic_location: Optional[str] = Field(None, description="Geographic location for regional targeting")
+    interests: Optional[str] = Field(None, description="Specific interests and hobbies (comma-separated)")
 
 class CampaignResponse(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
