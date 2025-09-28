@@ -152,7 +152,7 @@ const FuturisticLandingPage = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
             <Button 
               size="lg" 
-              onClick={() => navigate('/intelligence')}
+              onClick={() => setShowAuth(true)}
               className="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:from-cyan-600 hover:via-purple-600 hover:to-pink-600 text-white font-semibold text-lg px-8 py-4 shadow-2xl hover:shadow-cyan-500/25 transform hover:scale-105 transition-all duration-300"
             >
               <Brain className="w-5 h-5 mr-3" />
@@ -162,10 +162,11 @@ const FuturisticLandingPage = () => {
             <Button 
               size="lg" 
               variant="outline"
+              onClick={handleDemoWalkthrough}
               className="border-2 border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/10 backdrop-blur-sm bg-white/5 text-lg px-8 py-4 hover:scale-105 transition-all duration-300"
             >
               <Eye className="w-5 h-5 mr-3" />
-              View Demo
+              View Demo Walkthrough
             </Button>
           </div>
 
