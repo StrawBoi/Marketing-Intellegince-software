@@ -183,6 +183,34 @@ async def get_recent_news(location: str = "global", topics: List[str] = None):
         logger.error(f"Failed to fetch recent news: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to fetch recent news")
 
+async def save_to_campaign_history(age_range: str, location: str, interests: List[str], intelligence_data: Dict[str, Any]):
+    """Background task to automatically save generated campaigns to history"""
+    try:
+        import uuid
+        from datetime import datetime, timezone
+        
+        # Generate a descriptive title
+        interests_str = ", ".join(interests[:3])  # First 3 interests
+        title = f"{age_range} | {location} | {interests_str}"
+        
+        # Create history entry
+        history_entry = {
+            "id": str(uuid.uuid4()),
+            "age_range": age_range,
+            "geographic_location": location,
+            "interests": interests,
+            "intelligence_data": intelligence_data,
+            "title": title,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        # Save to database
+        await db.campaign_history.insert_one(history_entry)
+        logger.info(f"Campaign auto-saved to history: {title}")
+        
+    except Exception as e:
+        logger.error(f"Failed to auto-save campaign to history: {str(e)}")
+
 async def log_intelligence_request(age_range: str, location: str, interests: List[str], news_count: int):
     """Background task to log marketing intelligence requests for analytics"""
     logger.info(
