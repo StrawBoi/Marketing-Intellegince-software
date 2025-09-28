@@ -593,12 +593,11 @@ const IntegratedMarketingIntelligence = () => {
                       {campaignHistory.slice(0, 8).map((campaign) => (
                         <Card 
                           key={campaign.id}
-                          className="p-3 cursor-pointer hover:shadow-md hover:border-indigo-200 transition-all duration-200 group"
-                          onClick={() => handleHistorySelect(campaign)}
+                          className="p-3 hover:shadow-md hover:border-indigo-200 transition-all duration-200 group"
                           data-testid={`history-campaign-${campaign.id}`}
                         >
                           <div className="flex items-start justify-between">
-                            <div className="flex-1 min-w-0">
+                            <div className="flex-1 min-w-0 cursor-pointer" onClick={() => handleHistorySelect(campaign)}>
                               <div className="font-medium text-slate-800 group-hover:text-indigo-600 transition-colors">
                                 {campaign.age_range} • {campaign.geographic_location.split(',')[0]}
                               </div>
@@ -611,7 +610,20 @@ const IntegratedMarketingIntelligence = () => {
                                 <span className="text-xs text-slate-500">{formatTimeAgo(campaign.created_at)}</span>
                               </div>
                             </div>
-                            <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openPerformanceModal(campaign);
+                                }}
+                                className="h-8 px-2 text-xs border-orange-200 text-orange-700 hover:bg-orange-50"
+                                data-testid={`add-metrics-${campaign.id}`}
+                              >
+                                <BarChart3 className="w-3 h-3 mr-1" />
+                                Metrics
+                              </Button>
                               <Badge variant="secondary" className="bg-indigo-100 text-indigo-700">
                                 View
                               </Badge>
