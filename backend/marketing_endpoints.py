@@ -59,7 +59,16 @@ async def generate_marketing_intelligence(
             interests=request.interests
         )
         
-        # Add background task for analytics (optional)
+        # Phase 3A: Auto-save to history
+        background_tasks.add_task(
+            save_to_campaign_history,
+            request.age_range,
+            request.geographic_location,
+            request.interests,
+            intelligence
+        )
+        
+        # Add background task for analytics
         background_tasks.add_task(
             log_intelligence_request,
             request.age_range,
