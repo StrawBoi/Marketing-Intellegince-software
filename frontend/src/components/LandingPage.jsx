@@ -69,20 +69,21 @@ const LandingPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button 
               size="lg" 
+              className="btn-hover bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 hover:from-purple-700 hover:via-pink-700 hover:to-orange-700 text-white px-8 py-3 text-lg"
+              onClick={() => navigate('/intelligence')}
+              data-testid="intelligence-button"
+            >
+              AI Intelligence
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+            <Button 
+              size="lg" 
               className="btn-hover bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 text-lg"
               onClick={() => navigate('/generator')}
               data-testid="get-started-button"
             >
-              Get Started
+              Campaign Generator
               <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="btn-hover border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-3 text-lg"
-              data-testid="learn-more-button"
-            >
-              Learn More
             </Button>
           </div>
         </div>
