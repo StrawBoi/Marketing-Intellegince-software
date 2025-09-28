@@ -425,7 +425,9 @@ Ready to see the difference? Join thousands of satisfied customers who've alread
         # Create campaign object
         campaign_data = {
             "customer_persona": request.customer_persona,
-            "product_description": request.product_description, 
+            "product_description": request.product_description,
+            "geographic_location": request.geographic_location,
+            "interests": request.interests,
             "generated_content": generated_content.strip()
         }
         
